@@ -1,0 +1,10 @@
+*.tar
+*.tgz
+*.run
+*.aol
+*.linux64
+*.pdf
+*.mis
+cent7-base-image
+quartus-20-11-image
+questa2020.4-image
