@@ -1,5 +1,4 @@
 #!/bin/bash
-printf "COMMAND received: %s\n" "$@"
 
 WORKPATH=${HOME}/data/$TOOL4DOCKER_MK_PATH
 
