@@ -10,32 +10,24 @@
 # @author scdv
 #-------------------------------------------------------------------------------
 
-QUARTUSINSTALLER=Quartus-20.1.1.720-linux.tar
-QUARTUSCHECKSUM=C9BD44B17DD55FE3744DF558C73B5B1B
-
-CYCLONEINSTALLER=Quartus-20.1.1.720-devices-3.tar
-CYCLONECHECKSUM=47054EF22965094BACF7E94C362BE9E2
+QUARTUSCOMPLETEINSTALLER=Quartus-20.1.1.720-linux-complete.tar
+QUARTUSCOMPLETECHECKSUM=2C480C1BDE5C73DDC0FB20DB69F74A07
 
 HLSINSTALLER=HLSProSetup-21.2.0.72-linux.run
 HLSCHECKSUM=DE0AACFDB8C4381AE5D45256733F0B25
 
-FILES=$(QUARTUSINSTALLER) $(CYCLONEINSTALLER) $(HLSINSTALLER) Dockerfile
+FILES=$(HLSINSTALLER) $(QUARTUSCOMPLETEINSTALLER) Dockerfile
 
 SHELL := /bin/bash
 
 .PHONY: quartus20-image clean
 
-all: quartus-20-11-image
+all: quartus-20-1-1-image
 
-${QUARTUSINSTALLER}:
-	curl -O https://download.altera.com/akdlm/software/acdsinst/20.1std.1/720/ib_tar/Quartus-20.1.1.720-linux.tar
-	@SUM=$$(md5sum $(QUARTUSINSTALLER) | awk '{print toupper($$1)}'); \
-		if [ "$$SUM" != "$(QUARTUSCHECKSUM)" ]; then echo "Checksum for Quartus Installer doesn't match."; exit 1; fi
-
-${CYCLONEINSTALLER}:
-	curl -O https://download.altera.com/akdlm/software/acdsinst/20.1std.1/720/ib_tar/Quartus-20.1.1.720-devices-3.tar
-	@SUM=$$(md5sum $(CYCLONEINSTALLER) | awk '{print toupper($$1)}'); \
-		if [ "$$SUM" != "$(CYCLONECHECKSUM)" ]; then echo "Checksum for Cyclone Device Installer doesn't match."; exit 1; fi
+${QUARTUSCOMPLETEINSTALLER}:
+	curl -O https://download.altera.com/akdlm/software/acdsinst/20.1std.1/720/ib_tar/Quartus-20.1.1.720-linux-complete.tar
+	@SUM=$$(md5sum $(QUARTUSCOMPLETEINSTALLER) | awk '{print toupper($$1)}'); \
+		if [ "$$SUM" != "$(QUARTUSCOMPLETECHECKSUM)" ]; then echo "Checksum for Quartus Installer doesn't match."; exit 1; fi
 
 ${HLSINSTALLER}:
 	curl -O https://download.altera.com/akdlm/software/acdsinst/21.2/72/ib_installers/HLSProSetup-21.2.0.72-linux.run
@@ -43,7 +35,7 @@ ${HLSINSTALLER}:
 		if [ "$$SUM" != "$(HLSCHECKSUM)" ]; then echo "Checksum for HLS Installer doesn't match."; exit 1; fi
 
 
-quartus-20-11-image: $(FILES)
+quartus-20-1-1-image: $(FILES)
 	@docker rmi quartus:20.1.1 &>/dev/null || true
 	docker build --rm -t quartus:20.1.1 .
 	@touch $@
@@ -51,4 +43,4 @@ quartus-20-11-image: $(FILES)
 
 clean:
 	docker rmi quartus:20.1.1 >&/dev/null || true
-	rm -f quartus-20-11-image
+	rm -f quartus-20-1-1-image

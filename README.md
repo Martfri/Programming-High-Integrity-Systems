@@ -16,7 +16,9 @@ This repository contains tools to create Docker containers for FPGA tools. It is
 
 ## Prerequisites
 
-- Running Docker Installation as non-root [Getting Started with docker](https://docs.docker.com/engine/install/) [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/)
+- Running Docker Installation as non-root
+    [Getting Started with docker](https://docs.docker.com/engine/install/)
+    [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/)
 - Running local X11 server for graphic applications
 
 
