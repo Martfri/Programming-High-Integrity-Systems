@@ -20,15 +20,19 @@ This repository contains tools to create Docker containers for FPGA tools. It is
     [Getting Started with docker](https://docs.docker.com/engine/install/)
     [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/)
 - Running local X11 server for graphic applications
+- Dependencies:
+    - curl
+    - smbclient
+- Access to the smb Server `smb://cannes.zhaw.ch/ines`
 
 
 ## Installation
 
 1. clone the git repository
 
-2. copy the installation files for questa in the `/mentor_questa_2020.4_ultra/install/` directory (this file can't currently not be automatically downloaded)
+2. run `make` in the top-level directory
 
-3. run `make` in the top-level directory
+3. During the installation of questa you will have to enter your credentials to access the `cannes.zhaw.ch` smb server.
 
 4.	Optional: you can use the the `/scripts/local/create_local_sym_links.sh` script to create symbolic links in a choosen directory for the docker start scripts.
 

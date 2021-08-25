@@ -5,6 +5,7 @@
 *.linux64
 *.pdf
 *.mis
+*.zip
 cent7-base-image
 quartus-20-1-1-image
 questa2020.4-image
