@@ -18,7 +18,7 @@ FILES=$(QUESTAINSTALLER) Dockerfile
 
 SHELL := /bin/bash
 
-.PHONY: questa2020.4-image clean
+.PHONY: questa2020.4-image clean_install clean
 
 all: questa2020.4-image
 
@@ -38,6 +38,9 @@ questa2020.4-image: $(FILES)
 	docker build --rm -t questa:2020.4 .
 	@touch $@
 
+clean_install:
+	rm -f ${QUESTAINSTALLERZIP}
+	rm -f questa2020.4-image
 
 clean:
 	docker rmi questa:2020.4 >&/dev/null || true

@@ -20,7 +20,7 @@ FILES=$(HLSINSTALLER) $(QUARTUSCOMPLETEINSTALLER) Dockerfile
 
 SHELL := /bin/bash
 
-.PHONY: quartus20-image clean
+.PHONY: quartus20-image clean_install clean
 
 all: quartus-20-1-1-image
 
@@ -40,6 +40,9 @@ quartus-20-1-1-image: $(FILES)
 	docker build --rm -t quartus:20.1.1 .
 	@touch $@
 
+clean_install:
+	rm -f ${HLSINSTALLER} ${QUARTUSCOMPLETEINSTALLER}
+	rm -f quartus-20-1-1-image
 
 clean:
 	docker rmi quartus:20.1.1 >&/dev/null || true

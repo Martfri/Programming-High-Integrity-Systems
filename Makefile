@@ -19,7 +19,7 @@ TOOLS += intel_quartus_20.1_standard
 INSTALL = cent7 $(TOOLS)
 
 
-.PHONY: cent7 $(TOOLS) clean
+.PHONY: cent7 $(TOOLS) clean_install clean
 
 all: $(INSTALL)
 
@@ -32,6 +32,9 @@ $(TOOLS): cent7
 cent7:
 	@make -C $@
 	docker image prune -f
+
+clean_install:
+	$(foreach TOOL, $(INSTALL), $(MAKE) -C $(TOOL) clean_install;)
 
 clean:
 	$(foreach TOOL, $(INSTALL), $(MAKE) -C $(TOOL) clean;)

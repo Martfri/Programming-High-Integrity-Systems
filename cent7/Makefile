@@ -12,7 +12,7 @@
 
 SHELL := /bin/bash
 
-.PHONY: cent7-base-image clean
+.PHONY: cent7-base-image clean_install clean
 
 all: cent7-base-image
 
@@ -23,6 +23,9 @@ cent7-base-image: Dockerfile
 	--build-arg user_gid=$$(id -g) \
 	--build-arg user_name=$$(whoami)
 	@touch $@
+
+clean_install:
+	rm -f cent7-base-image
 
 clean:
 	docker rmi cent7-base >&/dev/null || true
