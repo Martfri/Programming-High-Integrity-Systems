@@ -1,0 +1,19 @@
+
+PURPOSE=benl-AES
+IMG=alpine3-base
+
+
+function main()
+{
+    docker run \
+        --rm \
+        --network=host \
+        -it \
+        -u $(id -u):$(id -g) \
+        -h ${PURPOSE}-$(whoami) \
+        ${IMG}
+}
+
+
+main
+
