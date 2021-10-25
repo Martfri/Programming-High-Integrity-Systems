@@ -12,7 +12,7 @@
 
 # Build config
 # Check docker images for installed tools
-TOOL := quartus:20.1.1
+TOOL := alpine3-base
 # This path will be mounted as top directory on docker
 # must be relative to this path (empty for this path)
 BUILD_TOP_PATH := ./
@@ -25,17 +25,23 @@ MAKEFILE := Makefile
 LOAD_PATH := ${HOME}/scripts/docker
 
 # Variables
-MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+MKFILE_PATH := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 MOUNT_PATH := $(abspath $(dir $(LOCAL_PATH)$(BUILD_TOP_PATH)))
 LOCAL_PATH := $(subst $(MOUNT_PATH)/, , $(dir $(MKFILE_PATH)))
+
+ifeq ($(strip $(LOCAL_PATH)),)
+    LOCAL_PATH := ./
+endif
 
 
 .PHONY: all show_var
 
 # run Make in Docker
 show_var:
+	@printf "MAKEFILE_LIST: %s\n" $(MAKEFILE_LIST)
 	@printf "Tool:          %s\n" $(TOOL)
-	@printf "Makefile Path: %s\n" $(LOCAL_PATH)
+	@printf "Makefile Path: %s\n" $(MKFILE_PATH)
+	@printf "Local Path:    %s\n" $(LOCAL_PATH)
 	@printf "Mount Path:    %s\n" $(MOUNT_PATH)
 
 # it is possible to open programs in docker using this script

@@ -46,19 +46,25 @@
 #
 #  ############################################################
 
-# base image, freeze at 3.14.2, October 2021
-FROM alpine:3.14.2
+FROM scratch
 
+# install packages from own server
+ENV PKGS=/alpine_linux_3-14
+ADD ${PKGS}/alpine-minirootfs-3.14.2-x86_64.tar.gz /
+ARG PKGS_LST
 
-# update and install dependencies
-RUN apk update        && \
-    apk upgrade       && \
-    apk add bash      && \
-    apk add musl-dev  && \
-    apk add gcc       && \
-    apk add make      && \
-    apk add cunit-dev && \
-    apk add vim
+# intentionally omit at the beginning:
+# apk update
+# apk upgrade
+
+# Copy packages into container and install them.
+COPY ${PKGS}/*.apk /root/
+RUN cd /root && \
+    apk add --allow-untrusted ${PKGS_LST}
+
+# Remove the apk packages after installation.
+RUN cd /root && \
+    rm ./*.apk
 
 
 # add user
@@ -91,4 +97,6 @@ COPY /config/.vimrc /home/$user_name/.vimrc
 
 # add rights
 RUN chown -R $user_name /home/$user_name
+
+CMD ["/bin/bash"]
 

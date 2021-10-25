@@ -1,6 +1,7 @@
 
 PURPOSE=benl-AES
 IMG=alpine3-base
+MOUNT_PATH=$(realpath .)
 
 
 function main()
@@ -11,6 +12,7 @@ function main()
         -it \
         -u $(id -u):$(id -g) \
         -h ${PURPOSE}-$(whoami) \
+        -v ${MOUNT_PATH}:/home/$(whoami)/data \
         ${IMG}
 }
 

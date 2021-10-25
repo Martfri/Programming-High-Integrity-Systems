@@ -12,19 +12,30 @@
 
 include ./shvars.mk
 
+DL     := wget
+TAR    := tar
+EXT    := http://jupiter-win.zhaw.ch/mariana-trench/docker/from_scratch
+FOLDER := alpine_linux_3-14
+BUNDLE := $(FOLDER).tar.gz
 
-.PHONY: $(IMG_NAME) clean_install clean
+.PHONY: $(IMG_NAME) clean_install clean purge
 
 
 all: $(IMG_NAME)
 
 
-$(IMG_NAME): $(DKRFIL)
+$(BUNDLE):
+	$(DL) $(EXT)/$@ -O ./$@
+	$(TAR) xvf $@
+
+
+$(IMG_NAME): $(DKRFIL) $(BUNDLE)
 	@$(DKR) rmi $(DKR_TAG) 1> $(NIL) 2> $(NIL) || true
 	$(DKR) build --rm -t $(DKR_TAG) . \
     --build-arg user_uid=$$(id -u)    \
     --build-arg user_gid=$$(id -g)    \
-    --build-arg user_name=$$(whoami)
+    --build-arg user_name=$$(whoami)  \
+	--build-arg PKGS_LST="$(shell cd scripts && bash echo_pkgs_build_arg.bash)"
 	@touch $@
 
 
@@ -33,6 +44,10 @@ clean_install:
 
 
 clean:
+	-rm -rf $(BUNDLE) $(FOLDER)
+
+
+purge:
 	$(DKR) rmi $(DKR_TAG) 1> $(NIL) 2> $(NIL) || true
-	-rm -f $(IMG_NAME)
+	-rm -rf $(IMG_NAME) $(BUNDLE) $(FOLDER)
 
