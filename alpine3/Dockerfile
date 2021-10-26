@@ -66,6 +66,11 @@ RUN cd /root && \
 RUN cd /root && \
     rm ./*.apk
 
+# Copy flexelint to the container
+COPY ${PKGS}/flint /root/
+RUN cd /root && \
+    mv ./flint /usr/bin/
+
 
 # add user
 ARG user_uid
