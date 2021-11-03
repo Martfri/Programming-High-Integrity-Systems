@@ -18,7 +18,7 @@ DKR    := docker
 DKRFIL := Dockerfile
 
 OS_MAJOR := alpine3
-OS_MINOR := base
+OS_MINOR := regular
 OS_APDX  := image
 
 IMG_NAME := $(OS_MAJOR)-$(OS_MINOR)-$(OS_APDX)

@@ -1,6 +1,6 @@
 
 PURPOSE=benl-AES
-IMG=alpine3-base
+IMG=alpine3-regular
 MOUNT_PATH=$(realpath .)
 
 

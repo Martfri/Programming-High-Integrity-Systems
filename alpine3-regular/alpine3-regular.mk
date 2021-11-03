@@ -6,7 +6,7 @@
 #   _| |_| | | | |____ ____) |  (University of Applied Sciences)
 #  |_____|_| |_|______|_____/   8401 Winterthur, Switzerland
 # --------------------------------------------------------------------
-#  @file alpine3-base.mk
+#  @file alpine3-regular.mk
 #  @author scdv, leiu
 # --------------------------------------------------------------------
 
@@ -17,6 +17,6 @@ include ./shvars.mk
 
 
 $(DKR_TAG):
-	@docker image inspect alpine3-base &>/dev/null || \
+	@docker image inspect $(DKR_TAG) &>/dev/null || \
      (echo "$(DKR_TAG) image does not exist"; exit 1 )
 

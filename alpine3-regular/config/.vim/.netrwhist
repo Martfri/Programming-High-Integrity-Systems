@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/home/leiu/duagon_src/mod/mbed_tls/mbedtls-2.16.7/library'
+let g:netrw_dirhist_7='/home/leiu/duagon_src/mod/mbed_tls/mbedtls-2.16.7'
+let g:netrw_dirhist_6='/home/leiu/duagon_src/mod/mbed_tls'
+let g:netrw_dirhist_5='/home/leiu/repositories/git/vt-1/vnet'
+let g:netrw_dirhist_4='/home/leiu/Documents/mpc_lab9/test_src'
+let g:netrw_dirhist_3='/home/leiu/repositories/git/vt-1/doc'
+let g:netrw_dirhist_2='/home/leiu/repositories/git/vt-1'
+let g:netrw_dirhist_1='/home/leiu/duagon_src/mod/eth_ctrl/code'
+let g:netrw_dirhist_0='/home/leiu/duagon_src/mod/eth_ctrl'
+let g:netrw_dirhist_9='/home/leiu/duagon_src/mod/ftpserver/code/mod_itf'

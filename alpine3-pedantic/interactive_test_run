@@ -1,0 +1,21 @@
+
+PURPOSE=benl-AES
+IMG=alpine3-pedantic
+MOUNT_PATH=$(realpath .)
+
+
+function main()
+{
+    docker run \
+        --rm \
+        --network=host \
+        -it \
+        -u $(id -u):$(id -g) \
+        -h ${PURPOSE}-$(whoami) \
+        -v ${MOUNT_PATH}:/home/$(whoami)/data \
+        ${IMG}
+}
+
+
+main
+
