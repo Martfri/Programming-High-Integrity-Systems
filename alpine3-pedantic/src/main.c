@@ -22,9 +22,9 @@ int main() {
     while (false == rcvdExitCmd) {
         readSensors(sensorReadings);
 
-        computeDistance_BlockA();
+        computeDistance_BlockA(sensorReadings);
 
-        computeDistance_BlockB();
+        computeDistance_BlockB(sensorReadings);
 
         runStage2Voter();
 
