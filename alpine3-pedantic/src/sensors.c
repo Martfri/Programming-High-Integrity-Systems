@@ -2,7 +2,7 @@
 
 #include "stdLib.h"
 
-int8_t getSensorReading(uint8_t sensorIdx) {
+int32_t getSensorReading(uint8_t sensorIdx) {
     switch (sensorIdx) {
         case 0:
             /* select right file */
@@ -23,20 +23,21 @@ int8_t getSensorReading(uint8_t sensorIdx) {
     /* read value */
 
     /* close file */
-    int32_t reading = 20;
+    float reading_f = 19.5;
+    int32_t reading = (int32_t)(reading_f * 10.0);  // converts float to truncated integer
     // reading = E_ERROR; in case of failure to read value return -1
     return reading;
 }
 
-void printSensorReadings(int32_t sensorReadings[]) {
+void printSensorReadings(sensor_t sensorReadings[]) {
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
-        printf("Sensor %d: %d\n", sensorIdx, sensorReadings[sensorIdx]);
+        printf("Sensor %d: %d\n", sensorIdx, sensorReadings[sensorIdx].reading);
     }
 }
 
-int8_t readSensors(int32_t sensorReadings[]) {
+int8_t readSensors(sensor_t sensorReadings[]) {
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
-        sensorReadings[sensorIdx] = getSensorReading(sensorIdx);
+        sensorReadings[sensorIdx].reading = getSensorReading(sensorIdx);
     }
 
     printSensorReadings(sensorReadings);

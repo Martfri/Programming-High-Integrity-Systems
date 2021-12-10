@@ -8,7 +8,7 @@ int main() {
     // returnType_en retVal;
     pthread_t cliThread;
     bool rcvdExitCmd = false;
-    int32_t sensorReadings[NR_OF_SENSORS];
+    sensor_t sensorReadings[NR_OF_SENSORS];  // holds the value of the sensor readings * 10
 
     printf("Starting Program\n");
 
