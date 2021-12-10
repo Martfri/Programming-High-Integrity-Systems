@@ -37,12 +37,12 @@ void printSensorReadings(sensor_t sensorReadings[]) {
     }
 }
 
-int8_t readSensors(sensor_t sensorReadings[]) {
+returnType_en readSensors(sensor_t sensorReadings[]) {
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         sensorReadings[sensorIdx].reading = getSensorReading(sensorIdx);
     }
 
     printSensorReadings(sensorReadings);
 
-    return 0;
+    return E_OK;
 }
