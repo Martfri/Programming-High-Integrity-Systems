@@ -9,6 +9,7 @@ int main() {
     pthread_t cliThread;
     bool rcvdExitCmd = false;
     sensor_t sensorReadings[NR_OF_SENSORS];  // holds the value of the sensor readings * 10
+    uint32_t distance_A;
 
     printf("Starting Program\n");
 
@@ -22,7 +23,8 @@ int main() {
     while (false == rcvdExitCmd) {
         readSensors(sensorReadings);
 
-        computeDistance_BlockA(sensorReadings);
+        computeDistance_BlockA(sensorReadings, &distance_A);
+        printf("BlockA Computed distance: %.2f m\n\n", ((float)distance_A) / 10.0);
 
         computeDistance_BlockB(sensorReadings);
 
