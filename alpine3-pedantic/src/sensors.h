@@ -1,6 +1,9 @@
 #ifndef SENSORS_H
 #define SENSORS_H
+
 #include <stdint.h>
+
+#include "stdLib.h"
 #define NR_OF_SENSORS 3
 
 typedef enum {
@@ -13,5 +16,5 @@ typedef struct sensor_t {
     uint32_t reading;
 } sensor_t;
 
-int8_t readSensors(sensor_t sensorReadings[]);
+returnType_en readSensors(sensor_t sensorReadings[]);
 #endif

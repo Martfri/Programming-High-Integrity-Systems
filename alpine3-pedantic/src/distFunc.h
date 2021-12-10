@@ -4,6 +4,6 @@
 
 #include "sensors.h"
 
-int8_t computeDistance_BlockA(sensor_t sensorReadings[]);
-int8_t computeDistance_BlockB(sensor_t sensorReadings[]);
+returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distance);
+returnType_en computeDistance_BlockB(sensor_t sensorReadings[]);
 #endif
