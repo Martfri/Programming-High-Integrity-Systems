@@ -23,8 +23,10 @@ int32_t getSensorReading(uint8_t sensorIdx) {
     /* read value */
 
     /* close file */
-    float reading_f = 19.5;
-    int32_t reading = (int32_t)(reading_f * 10.0);  // converts float to truncated integer
+    // float reading_f = (rand() % (20 - 18 + 1)) + 18;
+    // int32_t reading = (int32_t)(reading_f * 10.0);
+
+    int32_t reading = (rand() % (200 - 198 + 1)) + 198;
     // reading = E_ERROR; in case of failure to read value return -1
     return reading;
 }
