@@ -1,4 +1,9 @@
+#ifndef DIST_FUNC_H
+#define DIST_FUNC_H
 #include <stdint.h>
 
-int8_t computeDistance_BlockA(int32_t sensorReadings[]);
-int8_t computeDistance_BlockB(int32_t sensorReadings[]);
+#include "sensors.h"
+
+int8_t computeDistance_BlockA(sensor_t sensorReadings[]);
+int8_t computeDistance_BlockB(sensor_t sensorReadings[]);
+#endif
