@@ -1,3 +1,6 @@
+#ifndef STDLIB_H
+#define STDLIB_H
+
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -11,3 +14,4 @@ typedef enum {
     E_OK = 0,
     E_NOT_OK = 1
 } returnType_en;
+#endif
