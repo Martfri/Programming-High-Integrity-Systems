@@ -11,7 +11,9 @@ int main() {
     sensor_t sensorReadings[NR_OF_SENSORS];  // holds the value of the sensor readings * 10
     uint32_t distance_A;
 
+#ifdef DEBUG
     printf("Starting Program\n");
+#endif
 
     /* Start keyboard listener thread */
     if (0 != pthread_create(&cliThread, (pthread_attr_t *)NULL, readCLI, (void *)&rcvdExitCmd)) {
@@ -24,7 +26,10 @@ int main() {
         readSensors(sensorReadings);
 
         computeDistance_BlockA(sensorReadings, &distance_A);
+
+#ifdef DEBUG
         printf("BlockA Computed distance: %.2f m\n\n", ((float)distance_A) / 10.0);
+#endif
 
         computeDistance_BlockB(sensorReadings);
 

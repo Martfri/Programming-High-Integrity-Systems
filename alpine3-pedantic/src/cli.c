@@ -23,6 +23,10 @@ void *readCLI(void *_rcvdExitCmd) {
             printf("Stopped by user\n");
         }
     }
+
+#ifdef DEBUG
     printf("CLI thread terminating\n");
+#endif
+
     return NULL;
 }

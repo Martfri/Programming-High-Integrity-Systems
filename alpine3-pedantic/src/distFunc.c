@@ -9,9 +9,15 @@ uint32_t computeDistance_A(int32_t currentValue) {
     // Sensor characteristic equation with scaled current
     // distance = -1.25 * current + 250
 
-    // printf("\ncurrentValue: %d\n", currentValue);
+#ifdef DEBUG
+    printf("\ncurrentValue: %d\n", currentValue);
+#endif
+
     uint32_t distance = (-1.25 * currentValue + 250);
-    // printf("Computed distance: %d (m*10)\n\n", distance);
+
+#ifdef DEBUG
+    printf("Computed distance: %d (m*10)\n\n", distance);
+#endif
     return distance;
 }
 
