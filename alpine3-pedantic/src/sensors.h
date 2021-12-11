@@ -14,11 +14,7 @@
 #define NR_OF_SENSORS 3
 
 /**
- * @brief Loops through all the sensor and fills the array of readings with 
- * the most updated sensor readings
- *
- * @param sensorReadings: Array of sensor readings
- * @return E_OK = 0
+ * @brief Sensor state enumeration
  */
 typedef enum {
     SENSOR_OK = 0,
@@ -26,11 +22,7 @@ typedef enum {
 } sensorState_en;
 
 /**
- * @brief Loops through all the sensor and fills the array of readings with 
- * the most updated sensor readings
- *
- * @param sensorReadings: Array of sensor readings
- * @return E_OK = 0
+ * @brief Sensor structure definition
  */
 typedef struct sensor_t {
     sensorState_en state;
@@ -45,4 +37,5 @@ typedef struct sensor_t {
  * @return E_OK = 0
  */
 returnType_en readSensors(sensor_t sensorReadings[]);
+
 #endif
