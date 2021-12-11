@@ -1,8 +1,8 @@
 /**
  * @file sensors.h
- * @brief Implementation of the platform specific command line interface.
+ * @brief Implementation of simulated sensor driver.
  *
- * @note the gPTP protocol requires the following functions:
+ * @note 
  */
 #ifndef SENSORS_H
 #define SENSORS_H
