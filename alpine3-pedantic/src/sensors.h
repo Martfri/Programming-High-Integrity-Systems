@@ -19,6 +19,8 @@
 #define SENSOR_TRANSFER_FUNC(current) (-1.25 * current + 25)          // in mA to meters
 #define SENSOR_SCALED_TRANSFER_FUNC(current) (-1.25 * current + 250)  // in 10*mA to 10*m
 
+#define MAX_SAFE_DISTANCE 2 * 10  // in 10*m
+
 /**
  * @brief Sensor state enumeration
  */
