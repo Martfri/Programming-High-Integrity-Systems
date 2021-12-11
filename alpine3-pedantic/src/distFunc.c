@@ -16,13 +16,13 @@ uint32_t computeDistance_A(int32_t currentValue) {
     // distance = -1.25 * current + 250
 
 #ifdef DEBUG
-    printf("\ncurrentValue: %d\n", currentValue);
+    printf("Voted Current: %d (10*mA)\n", currentValue);
 #endif
 
     uint32_t distance = (-1.25 * currentValue + 250);
 
 #ifdef DEBUG
-    printf("Computed distance: %d (m*10)\n\n", distance);
+    printf("Computed distance: %d (10*m)\n", distance);
 #endif
     return distance;
 }
@@ -54,7 +54,7 @@ returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distan
 #endif
 
     } else {
-        printf("Sensors did not provide reliable readings\n");
+        printf("Sensors did not provide reliable readings\n\n");
         retVal = E_NOT_OK;
     }
 
