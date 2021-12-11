@@ -52,14 +52,23 @@ void printSensorReadings(sensor_t sensorReadings[]) {
 
 /**
  * @brief Loops through all the sensor and fills the array of readings with 
- * the most updated sensor readings
+ * the most updated sensor readings. In case a fault sensor is detected,
+ * its state is set to SENSOR_NOT_OK and the reading to 0.
  *
  * @param sensorReadings: Array of sensor readings
  * @return E_OK = 0
  */
 returnType_en readSensors(sensor_t sensorReadings[]) {
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
-        sensorReadings[sensorIdx].reading = getSensorReading(sensorIdx);
+        uint32_t reading = getSensorReading(sensorIdx);
+
+        if (40 < reading && 200 > reading) {
+            sensorReadings[sensorIdx].reading = reading;
+            sensorReadings[sensorIdx].state = SENSOR_OK;
+        } else {
+            sensorReadings[sensorIdx].reading = 0;
+            sensorReadings[sensorIdx].state = SENSOR_NOT_OK;
+        }
     }
 
 #ifdef DEBUG
