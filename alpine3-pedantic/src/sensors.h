@@ -17,8 +17,8 @@
  * @brief Sensor state enumeration
  */
 typedef enum {
-    SENSOR_OK = 0,
-    SENSOR_NOT_OK
+    SENSOR_NOT_OK = 0,
+    SENSOR_OK,
 } sensorState_en;
 
 /**
