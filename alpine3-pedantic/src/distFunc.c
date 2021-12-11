@@ -10,9 +10,9 @@
  * @return uint32_t computed distance in (10*m)
  */
 uint32_t computeDistance_A(int32_t currentValue) {
-    // Sensor characteristic equation
+    // Sensor characteristic equation (mA)
     // distance = -1.25 * current + 25
-    // Sensor characteristic equation with scaled current
+    // Sensor characteristic equation with scaled current (10*mA)
     // distance = -1.25 * current + 250
 
 #ifdef DEBUG

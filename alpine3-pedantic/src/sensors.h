@@ -12,6 +12,9 @@
 #include "stdLib.h"
 
 #define NR_OF_SENSORS 3
+#define OPERATIONAL_CURR_MIN 4 * 10   // in 10*mA
+#define OPERATIONAL_CURR_MAX 20 * 10  // in 10*mA
+#define SENSOR_ACCURACY 0.2 * 10      // in 10*mA
 
 /**
  * @brief Sensor state enumeration
