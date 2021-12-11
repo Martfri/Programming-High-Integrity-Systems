@@ -4,6 +4,9 @@ TARGET = exe
 # Compiler
 CC = gcc
 
+# Linter
+LINT = flint
+
 # Compiler Options
 CFLAGS += -Wall		# Enables general warnings
 CFLAGS += -g		# Enables debug info
@@ -15,13 +18,14 @@ CFLAGS += -pedantic # Enables warnings demanded by ISO C
 LDFLAGS += -lm		# Links Math Libraries
 LDFLAGS += -pthread	# Links POSIX threads library
 
-.PHONY: default all clean
+.PHONY: default all clean lint
 
 default: $(TARGET)
 all: default
 
 OBJ=$(patsubst %.c, %.o, $(wildcard *.c))
 HDR=$(wildcard *.h)
+SRC=$(wildcard *.c)
 
 %.o: %.c $(HDR)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -34,3 +38,6 @@ $(TARGET): $(OBJ)
 
 clean:
 	-rm -f $(TARGET)
+
+lint:
+	$(LINT) $(SRC) $(HDR)
