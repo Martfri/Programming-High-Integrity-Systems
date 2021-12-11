@@ -34,7 +34,7 @@ int32_t getSensorReading(uint8_t sensorIdx) {
     // float reading_f = (rand() % (20 - 18 + 1)) + 18;
     // int32_t reading = (int32_t)(reading_f * 10.0);
 
-    int32_t reading = (rand() % (200 - 198 + 1)) + 198;
+    int32_t reading = (rand() % (200 - 196 + 1)) + 196;
     // reading = E_ERROR; in case of failure to read value return -1
     return reading;
 }
@@ -62,7 +62,7 @@ returnType_en readSensors(sensor_t sensorReadings[]) {
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         uint32_t reading = getSensorReading(sensorIdx);
 
-        if (40 < reading && 200 > reading) {
+        if (40 <= reading && 200 >= reading) {
             sensorReadings[sensorIdx].reading = reading;
             sensorReadings[sensorIdx].state = SENSOR_OK;
         } else {
