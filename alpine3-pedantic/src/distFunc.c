@@ -41,7 +41,9 @@ returnType_en computeDistance_B() {
 returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distance) {
     int32_t votedValue = 0;
     returnType_en retVal;
+
     retVal = runVoter_A(sensorReadings, &votedValue);
+
     if (E_OK == retVal) {
         /*TODO evaluate computed value*/
         *distance = computeDistance_A(votedValue);
