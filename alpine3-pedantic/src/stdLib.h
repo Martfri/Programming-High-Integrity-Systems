@@ -1,3 +1,9 @@
+/**
+ * @file stdLib.h
+ * @brief Implementats standard datatype for the whole project.
+ *
+ * @note 
+ */
 #ifndef STDLIB_H
 #define STDLIB_H
 
@@ -9,8 +15,15 @@
 #include <string.h>
 #include <unistd.h>
 
+/**
+ * @brief Enables debug console prints
+ */
 #define DEBUG
 
+/**
+ * @brief returnType enumeration
+ *
+ */
 typedef enum {
     E_ERROR = -1,
     E_OK = 0,

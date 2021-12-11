@@ -2,6 +2,13 @@
 
 #include "stdLib.h"
 
+/**
+ * @brief runs the implementation A of first stage voter
+ *
+ * @param sensorReadings: Array of sensor readings
+ * @param bestValue: pointer to a variable to hold best value from all the readings
+ * @return returnType_en E_OK in case the best value was computed sucessfuly, else E_NOT_OK
+ */
 returnType_en runVoter_A(sensor_t sensorReadings[], int32_t *bestValue) {
     returnType_en retVal = E_NOT_OK;
 
@@ -35,10 +42,22 @@ returnType_en runVoter_A(sensor_t sensorReadings[], int32_t *bestValue) {
     return retVal;
 }
 
+/**
+ * @brief
+ *
+ * @param
+ * @return
+ */
 returnType_en runVoter_B(sensor_t sensorReadings[]) {
     return 0;
 }
 
+/**
+ * @brief
+ *
+ * @param
+ * @return
+ */
 returnType_en runStage2Voter() {
     return 0;
 }

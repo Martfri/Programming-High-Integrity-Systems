@@ -3,6 +3,12 @@
 #include "stdLib.h"
 #include "voters.h"
 
+/**
+ * @brief converts a value of current in a distance.
+ *
+ * @param currentValue: value of the current to convert in (10*mA)
+ * @return uint32_t computed distance in (10*m)
+ */
 uint32_t computeDistance_A(int32_t currentValue) {
     // Sensor characteristic equation
     // distance = -1.25 * current + 25
@@ -25,6 +31,13 @@ returnType_en computeDistance_B() {
     return 0;
 }
 
+/**
+ * @brief runs the implementation A of the current to distance conversion algorithm
+ *
+ * @param sensorReadings: Array of sensor readings
+ * @param distance: pointer to a variable to hold the converted distance value
+ * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
+ */
 returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distance) {
     int32_t votedValue = 0;
     returnType_en retVal;
@@ -41,6 +54,12 @@ returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distan
     return retVal;
 }
 
+/**
+ * @brief
+ *
+ * @param
+ * @return
+ */
 returnType_en computeDistance_BlockB(sensor_t sensorReadings[]) {
     runVoter_B(sensorReadings);
     computeDistance_B();
