@@ -15,10 +15,10 @@
  * @brief runs the implementation A of the current to distance conversion algorithm
  *
  * @param sensorReadings: Array of sensor readings
- * @param distance: pointer to a variable to hold the converted distance value
+ * @param distanceIsSafe_A: pointer to a variable to signal if there is a threat nearby
  * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distance);
+returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceIsSafe_A);
 
 /**
  * @brief
@@ -26,6 +26,6 @@ returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distan
  * @param
  * @return
  */
-returnType_en computeDistance_BlockB(sensor_t sensorReadings[]);
+returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[]);
 
 #endif

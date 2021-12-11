@@ -26,7 +26,7 @@ int main() {
 
         evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A);
 
-        computeDistance_BlockB(sensorReadings);
+        evaluateDistance_BlockB(sensorReadings);
 
         runStage2Voter(distanceIsSafe_A);
 

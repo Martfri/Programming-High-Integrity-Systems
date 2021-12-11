@@ -33,19 +33,26 @@ returnType_en computeDistance_B() {
  * @param distance: pointer to a variable to hold the converted distance value
  * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distance) {
+returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceIsSafe_A) {
     int32_t votedValue = 0;
+    uint32_t distance = 0;
     returnType_en retVal;
 
     retVal = runVoter_A(sensorReadings, &votedValue);
 
     if (E_OK == retVal) {
         /*TODO evaluate computed value*/
-        *distance = computeDistance_A(votedValue);
+        distance = computeDistance_A(votedValue);
+        if (distance < MAX_SAFE_DISTANCE) {
+            *distanceIsSafe_A = false;
+        } else {
+            *distanceIsSafe_A = true;
+        }
         retVal = E_OK;
 
 #ifdef DEBUG
-        printf("BlockA Computed distance: %.2f m\n\n", ((float)*distance) / 10.0);
+        printf("BlockA Computed distance: %.2f m\n", ((float)distance) / 10.0);
+        printf("Distance is Safe: %s\n\n", *distanceIsSafe_A ? "TRUE" : "FALSE");
 #endif
 
     } else {
@@ -62,7 +69,7 @@ returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distan
  * @param
  * @return
  */
-returnType_en computeDistance_BlockB(sensor_t sensorReadings[]) {
+returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[]) {
     runVoter_B(sensorReadings);
     computeDistance_B();
     return 0;
