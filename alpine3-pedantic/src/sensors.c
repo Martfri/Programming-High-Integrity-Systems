@@ -66,6 +66,7 @@ returnType_en readSensors(sensor_t sensorReadings[]) {
             sensorReadings[sensorIdx].reading = reading;
             sensorReadings[sensorIdx].state = SENSOR_OK;
         } else {
+            /* Fault check may be added here */
             sensorReadings[sensorIdx].reading = 0;
             sensorReadings[sensorIdx].state = SENSOR_NOT_OK;
         }
