@@ -46,6 +46,11 @@ returnType_en computeDistance_BlockA(sensor_t sensorReadings[], uint32_t* distan
         /*TODO evaluate computed value*/
         *distance = computeDistance_A(votedValue);
         retVal = E_OK;
+
+#ifdef DEBUG
+        printf("BlockA Computed distance: %.2f m\n\n", ((float)*distance) / 10.0);
+#endif
+
     } else {
         printf("Sensors did not provide reliable readings\n");
         retVal = E_NOT_OK;

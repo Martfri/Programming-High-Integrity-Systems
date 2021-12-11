@@ -27,10 +27,6 @@ int main() {
 
         computeDistance_BlockA(sensorReadings, &distance_A);
 
-#ifdef DEBUG
-        printf("BlockA Computed distance: %.2f m\n\n", ((float)distance_A) / 10.0);
-#endif
-
         computeDistance_BlockB(sensorReadings);
 
         runStage2Voter();
