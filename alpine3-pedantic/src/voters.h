@@ -17,7 +17,7 @@
  * @param bestValue: pointer to a variable to hold best value from all the readings
  * @return returnType_en E_OK in case the best value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en runVoter_A(sensor_t sensorReadings[], int32_t *bestValue);
+returnType_en runVoter_A(sensor_t sensorReadings[], int32_t* bestValue);
 
 /**
  * @brief
@@ -33,5 +33,5 @@ returnType_en runVoter_B(sensor_t sensorReadings[]);
  * @param
  * @return
  */
-returnType_en runStage2Voter();
+returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState);
 #endif
