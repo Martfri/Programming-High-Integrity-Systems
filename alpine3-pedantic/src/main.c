@@ -5,10 +5,10 @@
 #include "voters.h"
 
 int main() {
-    // returnType_en retVal;
+    returnType_en retVal;
     pthread_t cliThread;
-    bool distanceIsSafe_A = false, rcvdExitCmd = false;
     sensor_t sensorReadings[NR_OF_SENSORS];  // holds the value of the sensor readings * 10
+    bool enterSafeState = true, distanceIsSafe_A = false, distanceIsSafe_B = false, rcvdExitCmd = false;
 
 #ifdef DEBUG
     printf("Starting Program\n");
@@ -24,14 +24,18 @@ int main() {
     while (false == rcvdExitCmd) {
         readSensors(sensorReadings);
 
-        evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A);
+        retVal = evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A);
 
-        evaluateDistance_BlockB(sensorReadings);
+        retVal |= evaluateDistance_BlockB(sensorReadings);
 
-        runStage2Voter(distanceIsSafe_A);
+        retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState);
+
+        if (E_OK != retVal) {
+            enterSafeState = true;
+        }
 
         /* Display System Decision */
-        printf("\nGo To Safe State: %s\n", distanceIsSafe_A ? "FALSE" : "TRUE");
+        printf("\nGo To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
         sleep(1);
     }
 
