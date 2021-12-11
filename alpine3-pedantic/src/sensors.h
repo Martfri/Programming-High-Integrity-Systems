@@ -18,7 +18,7 @@
  */
 typedef enum {
     SENSOR_OK = 0,
-    SENSOR_NOK
+    SENSOR_NOT_OK
 } sensorState_en;
 
 /**
