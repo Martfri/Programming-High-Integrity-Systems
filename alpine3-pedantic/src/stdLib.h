@@ -9,6 +9,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#define DEBUG
+
 typedef enum {
     E_ERROR = -1,
     E_OK = 0,
