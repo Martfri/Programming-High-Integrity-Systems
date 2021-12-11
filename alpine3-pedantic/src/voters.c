@@ -39,7 +39,7 @@ returnType_en runVoter_A(sensor_t sensorReadings[], int32_t *bestValue) {
         uint32_t diff1 = abs(sensorReadings[0].reading - sensorReadings[1].reading);
         uint32_t diff2 = abs(sensorReadings[1].reading - sensorReadings[2].reading);
 
-        if (SENSOR_ACCURACY > diff1 || SENSOR_ACCURACY > diff2) {
+        if (SENSOR_ACCURACY >= diff1 || SENSOR_ACCURACY >= diff2) {
             if (diff1 < diff2) {
 #ifdef DEBUG
                 /*  S1--S2-----S3 */
