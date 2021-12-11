@@ -27,6 +27,24 @@ returnType_en computeDistance_B() {
 }
 
 /**
+ * @brief Compares the distance with the safe distance.
+ *
+ * @param distance: value of the distance in (10*m)
+ * @return true if 
+ */
+bool isDistanceSafe(uint32_t distance) {
+    bool safe = false;
+
+    if (distance < MIN_SAFE_DISTANCE) {
+        safe = false;
+    } else {
+        safe = true;
+    }
+
+    return safe;
+}
+
+/**
  * @brief runs the implementation A of the current to distance conversion algorithm
  *
  * @param sensorReadings: Array of sensor readings
@@ -43,11 +61,8 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
     if (E_OK == retVal) {
         /*TODO evaluate computed value*/
         distance = computeDistance_A(votedValue);
-        if (distance < MAX_SAFE_DISTANCE) {
-            *distanceIsSafe_A = false;
-        } else {
-            *distanceIsSafe_A = true;
-        }
+        *distanceIsSafe_A = isDistanceSafe(distance);
+
         retVal = E_OK;
 
 #ifdef DEBUG
