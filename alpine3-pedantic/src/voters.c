@@ -65,6 +65,7 @@ returnType_en runVoter_A(sensor_t sensorReadings[], int32_t *bestValue) {
             }
             retVal = E_OK;
         } else {
+            printf("Sensor threshold is greater than allowed.\n");
             /* If any diff is more than 2 means one of the sensors is faulty*/
             retVal = E_NOT_OK;
         }
