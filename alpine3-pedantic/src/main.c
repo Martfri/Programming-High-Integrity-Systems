@@ -7,9 +7,8 @@
 int main() {
     // returnType_en retVal;
     pthread_t cliThread;
-    bool rcvdExitCmd = false;
+    bool distanceIsSafe_A = false, rcvdExitCmd = false;
     sensor_t sensorReadings[NR_OF_SENSORS];  // holds the value of the sensor readings * 10
-    uint32_t distance_A;
 
 #ifdef DEBUG
     printf("Starting Program\n");
@@ -25,13 +24,14 @@ int main() {
     while (false == rcvdExitCmd) {
         readSensors(sensorReadings);
 
-        computeDistance_BlockA(sensorReadings, &distance_A);
+        evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A);
 
         computeDistance_BlockB(sensorReadings);
 
-        runStage2Voter();
+        runStage2Voter(distanceIsSafe_A);
 
         /* Display System Decision */
+        printf("\nGo To Safe State: %s\n", distanceIsSafe_A ? "FALSE" : "TRUE");
         sleep(1);
     }
 
