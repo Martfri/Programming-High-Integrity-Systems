@@ -36,12 +36,8 @@ returnType_en runVoter_A(sensor_t sensorReadings[], int32_t *bestValue) {
     returnType_en retVal = E_NOT_OK;
 
     if (true == allSensorsOperational(sensorReadings)) {
-        int32_t reading_s1 = sensorReadings[0].reading;
-        int32_t reading_s2 = sensorReadings[1].reading;
-        int32_t reading_s3 = sensorReadings[2].reading;
-
-        int32_t diff1 = reading_s1 - reading_s2;
-        int32_t diff2 = reading_s2 - reading_s3;
+        int32_t diff1 = sensorReadings[0].reading - sensorReadings[1].reading;
+        int32_t diff2 = sensorReadings[1].reading - sensorReadings[2].reading;
 
         if (SENSOR_ACCURACY > diff1 || SENSOR_ACCURACY > diff2) {
             if (diff1 < diff2) {
@@ -49,19 +45,19 @@ returnType_en runVoter_A(sensor_t sensorReadings[], int32_t *bestValue) {
                 /*  S1--S2-----S3 */
                 printf("Case 1\n");
 #endif
-                *bestValue = (reading_s1 + reading_s2) / (NR_OF_SENSORS - 1);
+                *bestValue = (sensorReadings[0].reading + sensorReadings[1].reading) / (NR_OF_SENSORS - 1);
             } else if (diff2 < diff1) {
 #ifdef DEBUG
                 /*  S1-----S2--S3 */
                 printf("Case 2\n");
 #endif
-                *bestValue = (reading_s2 + reading_s3) / (NR_OF_SENSORS - 1);
+                *bestValue = (sensorReadings[1].reading + sensorReadings[2].reading) / (NR_OF_SENSORS - 1);
             } else {
 #ifdef DEBUG
                 /*  S1--S2--S3 */
                 printf("Case 3\n");
 #endif
-                *bestValue = (reading_s1 + reading_s2 + reading_s3) / NR_OF_SENSORS;
+                *bestValue = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
             }
             retVal = E_OK;
         } else {
