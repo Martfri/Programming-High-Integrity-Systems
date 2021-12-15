@@ -36,7 +36,7 @@ int main() {
 
         /* Display System Decision */
         printf("\nGo To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
-        sleep(1);
+        sleep(1 * 1);
     }
 
     /* Wait For CLI thread to terminate */
