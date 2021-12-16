@@ -1,5 +1,5 @@
 # Executable Target Name
-TARGET = exe
+TARGET = phis
 
 # Compiler
 CC = gcc
@@ -38,6 +38,6 @@ $(TARGET): $(OBJ)
 
 clean:
 	-rm -f $(TARGET)
-
+	
 lint:
 	$(LINT) $(SRC) $(HDR)
