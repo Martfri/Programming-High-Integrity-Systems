@@ -1,43 +1,12 @@
 #include "sensors.h"
 
+#include <arpa/inet.h>
+#include <sys/socket.h>
+
 #include "stdLib.h"
 
-/**
- * @brief Returns the output value from a simulated sensor.
- * Selects the right file to read according to the sensor index
- * and reads and returns the written value * 10 to avoid floating point values
- *
- * @param sensorIdx: sensor index
- * @return sensor reading in (10*m)
- */
-int32_t getSensorReading(uint8_t sensorIdx) {
-    switch (sensorIdx) {
-        case 0:
-            /* select right file */
-            break;
-        case 1:
-            /* select right file */
-            break;
-        case 2:
-            /* select right file */
-            break;
-        default:
-            printf("Error: Invalid Sensor Index\n");
-            break;
-    }
-
-    /* open file */
-
-    /* read value */
-
-    /* close file */
-    // float reading_f = (rand() % (20 - 18 + 1)) + 18;
-    // int32_t reading = (int32_t)(reading_f * 10.0);
-
-    int32_t reading = (rand() % (OPERATIONAL_CURR_MAX - 196 + 1)) + 196;
-    // reading = E_ERROR; in case of failure to read value return -1
-    return reading;
-}
+#define PORT 8080
+#define IP "127.0.0.1"
 
 /**
  * @brief Prints to the console the current readings of all the sensors
@@ -58,15 +27,25 @@ void printSensorReadings(sensor_t sensorReadings[]) {
  * @param sensorReadings: Array of sensor readings
  * @return E_OK = 0
  */
-returnType_en readSensors(sensor_t sensorReadings[]) {
+returnType_en readSensors(int sockfd, sensor_t sensorReadings[]) {
+    uint8_t sensorMsg[3];
+    struct sockaddr_in client_addr;
+    int client_struct_length = sizeof(client_addr);
+    memset(sensorMsg, '\0', sizeof(sensorMsg));
+
+    if (recvfrom(sockfd, sensorMsg, sizeof(sensorMsg), 0, (struct sockaddr *)&client_addr, (void *)&client_struct_length) < 0) {
+        printf("ERROR: Failed to receive reading\n");
+        return E_NOT_OK;
+    }
+
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
-        uint32_t reading = getSensorReading(sensorIdx);
+        uint8_t reading = sensorMsg[sensorIdx];
 
         if (OPERATIONAL_CURR_MIN <= reading && OPERATIONAL_CURR_MAX >= reading) {
             sensorReadings[sensorIdx].reading = reading;
             sensorReadings[sensorIdx].state = SENSOR_OK;
         } else {
-            /* Fault check may be added here */
+            /* Sensor Fault check may be added here */
             sensorReadings[sensorIdx].reading = 0;
             sensorReadings[sensorIdx].state = SENSOR_NOT_OK;
         }
@@ -77,4 +56,46 @@ returnType_en readSensors(sensor_t sensorReadings[]) {
 #endif
 
     return E_OK;
+}
+
+void *sensorMsgStub(void *_rcvdExitCmd) {
+    bool *rcvdExitCmd = (bool *)_rcvdExitCmd;
+    int socket_desc;
+    struct sockaddr_in server_addr;
+    uint8_t client_message[3];
+    int server_struct_length = sizeof(server_addr);
+    memset(client_message, '\0', sizeof(client_message));
+    printf("Running Sender Thread\n");
+
+    // Create socket:
+    socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+    if (socket_desc < 0) {
+        printf("ERROR: Failed to create socket\n");
+    } else {
+        server_addr.sin_family = AF_INET;
+        server_addr.sin_port = htons(PORT);
+        server_addr.sin_addr.s_addr = inet_addr(IP);
+
+        while (false == *rcvdExitCmd) {
+            int8_t reading[3];
+
+            for (int i = 0; i < 3; i++) {
+                reading[i] = (rand() % (OPERATIONAL_CURR_MAX - 196 + 1)) + 196;
+            }
+
+            memcpy(client_message, reading, sizeof(reading));
+
+            // Send the message to server:
+            if (sendto(socket_desc, client_message, sizeof(client_message), 0, (struct sockaddr *)&server_addr, server_struct_length) < 0) {
+                printf("ERROR: Unable to send sensor values\n");
+            }
+        }
+    }
+
+    // Close the socket:
+    close(socket_desc);
+    printf("Terminating Sender Thread\n");
+
+    return NULL;
 }
