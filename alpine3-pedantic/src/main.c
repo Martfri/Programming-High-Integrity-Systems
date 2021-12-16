@@ -56,7 +56,7 @@ int main() {
 
     /* Main Loop */
     while (false == rcvdExitCmd) {
-        readSensors(sensorReadings);
+        readSensors(socket_desc, sensorReadings);
 
         retVal = evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A);
 
