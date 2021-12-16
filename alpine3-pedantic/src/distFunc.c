@@ -23,7 +23,7 @@ uint8_t computeDistance_A(uint8_t currentValue) {
     return distance;
 }
 
-float computeDistance_B(int32_t votedValue_B) {
+float computeDistance_B(float votedValue_B) {
     // attention rmoe: use constants, macros
     float yOffset = SensChar_Offset;             // 25m
     float gradient = SensChar_MaxDist / SensChar_DelCurrent;  // 20m/16mA

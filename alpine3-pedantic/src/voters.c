@@ -68,6 +68,7 @@ returnType_en runVoter_A(sensor_t sensorReadings[], uint8_t* bestValue) {
 
 returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B) {
     returnType_en retVal = E_NOT_OK;
+
     // bool opCondition = allSensorsOperational(sensorReadings);
 
     //attention rmoe: replace it by checking the state. This thing is done in sensors.c
@@ -93,7 +94,8 @@ returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B) {
     {  
         if (abs(sensorReadings[2].reading - sensorReadings[1].reading) <= SENSOR_ACCURACY &&
             abs(sensorReadings[2].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
-            abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY) {
+            abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY) 
+        {
 #ifdef DEBUG
             {
                 printf("Sensor values in range and tolerance.\n");
@@ -106,6 +108,7 @@ returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B) {
         {
             printf("Sensor values are not within SENSOR_ACCURACY.\n");
             *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
+            //printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
             retVal = E_NOT_OK;
         }
     }
