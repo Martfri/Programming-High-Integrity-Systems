@@ -17,7 +17,7 @@
  * @param bestValue: pointer to a variable to hold best value from all the readings
  * @return returnType_en E_OK in case the best value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en runVoter_A(sensor_t sensorReadings[], int32_t* bestValue);
+returnType_en runVoter_A(sensor_t sensorReadings[], uint8_t* bestValue);
 
 /**
  * @brief
