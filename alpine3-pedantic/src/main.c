@@ -13,7 +13,7 @@
 
 int main() {
     returnType_en retVal;
-    pthread_t cliThread, txThread;
+    pthread_t cliThread;
     sensor_t sensorReadings[NR_OF_SENSORS];  // holds the value of the sensor readings * 10
     bool enterSafeState = true, distanceIsSafe_A = false, distanceIsSafe_B = false, rcvdExitCmd = false;
     int socket_desc;
@@ -21,6 +21,13 @@ int main() {
 
 #ifdef DEBUG
     printf("Starting Program\n");
+
+    pthread_t txThread;
+    /*Stub Sensor thread */
+    if (0 != pthread_create(&txThread, (pthread_attr_t *)NULL, sensorMsgStub, (void *)&rcvdExitCmd)) {
+        printf("ERROR: Failed to create CLI thread, terminating program\n");
+        exit(EXIT_FAILURE);
+    }
 #endif
 
     // Create UDP socket:
@@ -44,12 +51,6 @@ int main() {
 
     /* Start keyboard listener thread */
     if (0 != pthread_create(&cliThread, (pthread_attr_t *)NULL, readCLI, (void *)&rcvdExitCmd)) {
-        printf("ERROR: Failed to create CLI thread, terminating program\n");
-        exit(EXIT_FAILURE);
-    }
-
-    /*Stub Sensor thread */
-    if (0 != pthread_create(&txThread, (pthread_attr_t *)NULL, sensorMsgStub, (void *)&rcvdExitCmd)) {
         printf("ERROR: Failed to create CLI thread, terminating program\n");
         exit(EXIT_FAILURE);
     }
@@ -78,10 +79,12 @@ int main() {
         printf("ERROR: Failed to wait for CLI thread to terminate\n");
     }
 
+#ifdef DEBUG
     /* Wait For tx thread to terminate */
     if (0 != pthread_join(txThread, NULL)) {
         printf("ERROR: Failed to wait for tx thread to terminate\n");
     }
+#endif
 
     // Close the socket:
     close(socket_desc);

@@ -16,7 +16,7 @@
 #include <unistd.h>
 
 /**
- * @brief Enables debug console prints
+ * @brief Enables debug mode
  */
 #define DEBUG
 
