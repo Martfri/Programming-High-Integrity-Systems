@@ -1,4 +1,6 @@
 import random
+import socket
+import numpy as np
 
 class Model:
     def __init__(self):
@@ -82,7 +84,7 @@ class Model:
         if self.sensor_error[sensor_number-1]:
             self._sensor_current[sensor_number-1] = random.choice([0, 2])
         else:
-            self._sensor_current[sensor_number-1] = 20 - 16/20*self._sensor_distance[sensor_number-1]
+            self._sensor_current[sensor_number-1] = 10 * int(20 - 16/20*self._sensor_distance[sensor_number-1])
         pass
 
     def calculate_all_sensor_values(self):
@@ -99,7 +101,9 @@ class Model:
         Write the currents of all sensors into a file. The values are given in mA and angle_reset
         seperated by a newline character
         '''
-        f = open("sensor_values.txt", "w")
-        f.writelines([str(self._sensor_current[0]), "\n", str(self.sensor_current[1]), "\n", str(self.sensor_current[2])])
-        f.close()
+        data = np.array([self._sensor_current[0], self._sensor_current[1], self._sensor_current[2]], dtype = np.int8).flatten()
+
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            addr = ("172.27.245.27", 8080)
+            s.sendto(data, addr)
         pass

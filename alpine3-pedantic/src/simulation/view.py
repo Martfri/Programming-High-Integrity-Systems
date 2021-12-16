@@ -163,10 +163,10 @@ class View(tk.Tk):
         self.lbl_sensor[sensor_number-1].pack(side = "left")
 
         self.lbl_sensor_current[sensor_number-1] = ttk.Label(self.fra_sensor_values[sensor_number-1],
-                                                             width = 5)
+                                                             width = 3)
         self.lbl_sensor_current[sensor_number-1].pack(side = "left")
         sensor_current_unit = ttk.Label(self.fra_sensor_values[sensor_number-1],
-                                        text = " mA")
+                                        text = "/10 mA")
         sensor_current_unit.pack(side = "left")
         self.fra_sensor_values[sensor_number-1].grid(row = str(sensor_number + 1),
                                     column = "6")
