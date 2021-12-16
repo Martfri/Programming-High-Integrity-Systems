@@ -11,3 +11,4 @@ quartus-20-1-1-image
 questa2020.4-image
 alpine3-pedantic/src/exe
 alpine3-pedantic/src/phis
+alpine3-pedantic/src/*.o
