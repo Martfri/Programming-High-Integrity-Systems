@@ -26,7 +26,7 @@ int main() {
 
         retVal = evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A);
 
-        retVal |= evaluateDistance_BlockB(sensorReadings);
+        retVal |= evaluateDistance_BlockB(sensorReadings, &distanceIsSafe_B);
 
         retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState);
 
@@ -45,5 +45,5 @@ int main() {
     }
 
     printf("Terminating program\n");
-    return 0; //test repo second try
+    return 0;
 }

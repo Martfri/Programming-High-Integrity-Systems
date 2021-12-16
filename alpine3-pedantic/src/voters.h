@@ -20,12 +20,13 @@
 returnType_en runVoter_A(sensor_t sensorReadings[], int32_t* bestValue);
 
 /**
- * @brief
+ * @brief runs the implementation of second stage voter
  *
- * @param
- * @return
+ * @param sensorReadings: Array of sensor readings
+ * @param votedValue_B: pointer to a variable that holds the voted value 
+ * @return returnType_en E_OK in case the voted value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en runVoter_B(sensor_t sensorReadings[]);
+returnType_en runVoter_B(sensor_t sensorReadings[], int32_t *votedValue_B);
 
 /**
  * @brief

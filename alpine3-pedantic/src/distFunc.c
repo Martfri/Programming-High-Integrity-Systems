@@ -22,8 +22,15 @@ uint32_t computeDistance_A(int32_t currentValue) {
     return distance;
 }
 
-returnType_en computeDistance_B() {
-    return 0;
+float computeDistance_B(int32_t votedValue_B) 
+{
+    // attention rmoe: use constants, macros
+    float yOffset = 250; // 25m 
+    float gradient = 250/160; // 20m/16mA
+
+    float distance_B = yOffset - ((float)(votedValue_B)*gradient); //Transferfunction of sensor
+
+    return distance_B;
 }
 
 /**
@@ -79,13 +86,35 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
 }
 
 /**
- * @brief
+ * @brief runs the implementation B of the current to distance conversion algorithm
  *
- * @param
- * @return
+ * @param sensorReadings: Array of sensor readings
+ * @param distance: pointer to a variable to hold the converted distance value
+ * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[]) {
-    runVoter_B(sensorReadings);
-    computeDistance_B();
-    return 0;
+
+returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[], bool* distanceIsSafe_B) {
+    int32_t votedValue_B = 0;
+    float distance_B = 0;
+    returnType_en retVal;
+
+    retVal = runVoter_B(sensorReadings, &votedValue_B);
+
+#ifdef DEBUG
+    printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
+#endif
+
+    distance_B = computeDistance_B(votedValue_B);
+
+#ifdef DEBUG
+    printf("BlockB Computed distance: %.2f m\n", (float)(distance_B/10));
+#endif
+
+    *distanceIsSafe_B = isDistanceSafe(distance_B);
+
+#ifdef DEBUG
+        printf("Distance is Safe: %s\n\n", *distanceIsSafe_B ? "TRUE" : "FALSE");
+#endif
+
+    return retVal;
 }

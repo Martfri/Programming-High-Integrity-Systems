@@ -79,8 +79,54 @@ returnType_en runVoter_A(sensor_t sensorReadings[], int32_t* bestValue) {
  * @param
  * @return
  */
-returnType_en runVoter_B(sensor_t sensorReadings[]) {
-    return E_OK;
+returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B) {
+    returnType_en retVal = E_NOT_OK;
+   // bool opCondition = allSensorsOperational(sensorReadings);
+
+//attention rmoe: replace it by cheking the state. This thing is done in sensors.c
+    for(int sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++)
+    {
+        if(sensorReadings[sensorIdx].reading < OPERATIONAL_CURR_MIN) //checks, if there is a sensor with current value below Operational_CURR_MIN
+        {
+            sensorIdx = NR_OF_SENSORS;
+            retVal = E_ERROR;
+
+            printf("A sensor value is < OPERATIONAL_CURR_MIN.\n");
+        }
+        else
+        {
+            ;
+        }
+    }
+
+    if(sensorReadings[0].reading > OPERATIONAL_CURR_MAX || sensorReadings[1].reading > OPERATIONAL_CURR_MAX || sensorReadings[2].reading > OPERATIONAL_CURR_MAX)
+    {
+        retVal = E_ERROR;
+        printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");
+    }
+    else 
+    {   //attention rmoe: 
+        if(abs(sensorReadings[2].reading - sensorReadings[1].reading) <= SENSOR_ACCURACY &&
+           abs(sensorReadings[2].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
+           abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY
+        )
+        {
+#ifdef DEBUG
+            {
+             printf("Sensor values in range and tolerance.\n");
+            }      
+#endif
+            *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
+            retVal = E_OK;
+        }
+        else
+        {
+            retVal = E_NOT_OK;
+            printf("Sensor values are not within SENSOR_ACCURACY.\n");
+        }
+    }
+
+    return retVal;
 }
 
 /**
