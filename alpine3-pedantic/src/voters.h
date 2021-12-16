@@ -31,8 +31,10 @@ returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B);
 /**
  * @brief
  *
- * @param
- * @return
+ * @param distanceIsSafe_A boolean with Voter A decision
+ * @param distanceIsSafe_B boolean with Voter B decision
+ * @param enterSafeState result of the stage 2 voter
+ * @return E_OK in case of success, otherwise E_NOT_OK
  */
 returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState);
 #endif
