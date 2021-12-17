@@ -84,13 +84,13 @@ class View(tk.Tk):
         self.fra_distance.grid(row = "4",
                                column = "2")
 
-        frm_arrow = tk.Canvas(container,
+        self.frm_arrow = tk.Canvas(container,
                               height = 30)
-        frm_arrow.grid(row = "5",
+        self.frm_arrow.grid(row = "5",
                        column = "1",
                        columnspan = "2",
                        sticky = "ew")
-        frm_arrow.create_line(0, 15, 670, 15, arrow=tk.BOTH)
+        self.line_arrow = self.frm_arrow.create_line(500, 15, 670, 15, arrow=tk.BOTH)
         self.hsb_distance = ttk.Scale(container,
                                         from_ = 30,
                                         to = 0,
