@@ -51,17 +51,27 @@ class Controller:
         sensor_error[2] = self.view.bool_sensor_error[2].get()
         self.model.sensor_error = sensor_error
 
+    def update_sensor_distance(self, event):
+        """
+        Gets called when one of the sensor distances gets changed by user input
+        """
+        sensor_distance = {}
+        sensor_distance[0] = float(self.view.str_sensor_distance[0].get())
+        sensor_distance[1] = float(self.view.str_sensor_distance[1].get())
+        sensor_distance[2] = float(self.view.str_sensor_distance[2].get())
+        self.model.sensor_distance = sensor_distance
+
     def update(self):
         """
         Recalculate the sensor current values and write them to file. Repeat after 10 ms
         """
         self.model.calculate_all_sensor_values()
         if (self.model.sensor_auto[0]):
-            self.view.txt_sensor_distance[0].insert(0, str(self.model.sensor_distance[0]))
+            self.view.str_sensor_distance[0].set(str(self.model.sensor_distance[0]))
         if (self.model.sensor_auto[1]):
-            self.view.txt_sensor_distance[1].insert(0, str(self.model.sensor_distance[1]))
+            self.view.str_sensor_distance[1].set(str(self.model.sensor_distance[1]))
         if (self.model.sensor_auto[2]):
-            self.view.txt_sensor_distance[2].insert(0, str(self.model.sensor_distance[2]))
+            self.view.str_sensor_distance[2].set(str(self.model.sensor_distance[2]))
         self.view.lbl_sensor_current[0]["text"] = str(self.model.sensor_current[0])
         self.view.lbl_sensor_current[1]["text"] = str(self.model.sensor_current[1])
         self.view.lbl_sensor_current[2]["text"] = str(self.model.sensor_current[2])

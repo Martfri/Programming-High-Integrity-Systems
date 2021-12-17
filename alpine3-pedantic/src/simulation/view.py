@@ -61,6 +61,8 @@ class View(tk.Tk):
         self.txt_distance = tk.Entry(self.fra_distance,
                                     width = "10",
                                     textvariable = self.str_distance)
+        self.txt_distance.bind("<Return>", self.controller.update_str_distance)
+        self.txt_distance.bind("<FocusOut>", self.controller.update_str_distance)
         self.txt_distance.pack(side = "left")
 
         self.lbl_distance_unit = ttk.Label(self.fra_distance,
@@ -69,10 +71,11 @@ class View(tk.Tk):
 
         self.str_tolerance = tk.StringVar()
         self.str_tolerance.set(str(self.model.tolerance))
-        self.str_tolerance.trace("w", self.controller.update_str_tolerance)
         self.txt_tolerance = tk.Entry(self.fra_distance,
                                      width = "10",
                                      textvariable = self.str_tolerance)
+        self.txt_tolerance.bind("<Return>", self.controller.update_str_tolerance)
+        self.txt_tolerance.bind("<FocusOut>", self.controller.update_str_tolerance)
         self.txt_tolerance.pack(side = "left")
         self.lbl_tolerance_unit = ttk.Label(self.fra_distance,
                                             text = " m")
@@ -156,6 +159,8 @@ class View(tk.Tk):
         self.txt_sensor_distance[sensor_number-1] = tk.Entry(self.fra_sensor_values[sensor_number-1],
                                                             width = 5,
                                                             textvariable = self.str_sensor_distance[sensor_number-1])
+        self.txt_sensor_distance[sensor_number-1].bind("<Return>", self.controller.update_sensor_distance)
+        self.txt_sensor_distance[sensor_number-1].bind("<FocusOut>", self.controller.update_sensor_distance)
         self.txt_sensor_distance[sensor_number-1].pack(side = "left")
 
         self.lbl_sensor[sensor_number-1] = ttk.Label(self.fra_sensor_values[sensor_number-1],
