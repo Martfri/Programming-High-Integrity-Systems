@@ -87,8 +87,8 @@ returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B) {
     }
 
     if (sensorReadings[0].reading > OPERATIONAL_CURR_MAX || sensorReadings[1].reading > OPERATIONAL_CURR_MAX || sensorReadings[2].reading > OPERATIONAL_CURR_MAX) {
-        retVal = E_ERROR;
         printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");
+        retVal = E_ERROR;
     } 
     else 
     {  

@@ -26,6 +26,7 @@ uint8_t computeDistance_A(uint8_t currentValue) {
 float computeDistance_B(float votedValue_B) {
     // attention rmoe: use constants, macros
     float yOffset = SensChar_Offset;             // 25m
+    
     float gradient = SensChar_MaxDist / SensChar_DelCurrent;  // 20m/16mA
 
     float distance_B = yOffset - ((float)(votedValue_B)*gradient);  //Transferfunction of sensor
