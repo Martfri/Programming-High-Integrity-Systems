@@ -17,7 +17,7 @@ class Controller:
         self.model.distance = float(self.view.hsb_distance.get())
         self.view.str_distance.set(str(self.model.distance))
         self.view.frm_human.moveto(self.view.human, 475 - 500/30*self.model.distance, 0)
-        self.view.frm_arrow.coords(self.view.line_arrow, 500 - 50/3*self.model.distance, 15, 670, 15)
+        self.view.frm_arrow.coords(self.view.line_arrow, 500 - 50/3*self.model.distance, 15, 690, 15)
 
     def update_str_distance(self, *args):
         """
@@ -25,7 +25,7 @@ class Controller:
         """
         self.model.distance = float(self.view.str_distance.get())
         self.view.hsb_distance.set(self.model.distance)
-        self.view.frm_arrow.coords(self.view.line_arrow, 500 - 50/3*self.model.distance, 15, 670, 15)
+        self.view.frm_arrow.coords(self.view.line_arrow, 500 - 50/3*self.model.distance, 15, 690, 15)
 
     def update_str_tolerance(self, *args):
         """

@@ -90,7 +90,7 @@ class View(tk.Tk):
                        column = "1",
                        columnspan = "2",
                        sticky = "ew")
-        self.line_arrow = self.frm_arrow.create_line(500, 15, 670, 15, arrow=tk.BOTH)
+        self.line_arrow = self.frm_arrow.create_line(500, 15, 690, 15, arrow=tk.BOTH)
         self.hsb_distance = ttk.Scale(container,
                                         from_ = 30,
                                         to = 0,
@@ -125,6 +125,9 @@ class View(tk.Tk):
         self.lbl_sensor_current = {}
         self.fra_sensor_values = {}
 
+        self.img_sensor = tk.PhotoImage(file = './sensor.png')
+        self.img_sensor = self.img_sensor.subsample(3,3)
+
         self.init_sensor(container, 1)
         self.init_sensor(container, 2)
         self.init_sensor(container, 3)
@@ -134,6 +137,13 @@ class View(tk.Tk):
         """
         Creates all widgets for a specific sensor "sensor_number" on the container
         """
+
+        frm_sensor_image = tk.Canvas(container,
+                                     width = 100, height =  30)
+        frm_sensor_image.grid(row = str(sensor_number + 1),
+                              column = "3")
+        frm_sensor_image.create_image(50, 15, image = self.img_sensor)
+
         self.bool_sensor_auto[sensor_number-1] = tk.BooleanVar()
         self.bool_sensor_auto[sensor_number-1].set(self.model.sensor_auto[sensor_number-1])
         self.chk_sensor_auto[sensor_number-1] = ttk.Checkbutton(container,
