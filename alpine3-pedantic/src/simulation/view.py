@@ -61,6 +61,8 @@ class View(tk.Tk):
         self.txt_distance = tk.Entry(self.fra_distance,
                                     width = "10",
                                     textvariable = self.str_distance)
+        self.txt_distance.bind("<Return>", self.controller.update_str_distance)
+        self.txt_distance.bind("<FocusOut>", self.controller.update_str_distance)
         self.txt_distance.pack(side = "left")
 
         self.lbl_distance_unit = ttk.Label(self.fra_distance,
@@ -69,10 +71,11 @@ class View(tk.Tk):
 
         self.str_tolerance = tk.StringVar()
         self.str_tolerance.set(str(self.model.tolerance))
-        self.str_tolerance.trace("w", self.controller.update_str_tolerance)
         self.txt_tolerance = tk.Entry(self.fra_distance,
                                      width = "10",
                                      textvariable = self.str_tolerance)
+        self.txt_tolerance.bind("<Return>", self.controller.update_str_tolerance)
+        self.txt_tolerance.bind("<FocusOut>", self.controller.update_str_tolerance)
         self.txt_tolerance.pack(side = "left")
         self.lbl_tolerance_unit = ttk.Label(self.fra_distance,
                                             text = " m")
@@ -81,13 +84,13 @@ class View(tk.Tk):
         self.fra_distance.grid(row = "4",
                                column = "2")
 
-        frm_arrow = tk.Canvas(container,
+        self.frm_arrow = tk.Canvas(container,
                               height = 30)
-        frm_arrow.grid(row = "5",
+        self.frm_arrow.grid(row = "5",
                        column = "1",
                        columnspan = "2",
                        sticky = "ew")
-        frm_arrow.create_line(0, 15, 670, 15, arrow=tk.BOTH)
+        self.line_arrow = self.frm_arrow.create_line(500, 15, 690, 15, arrow=tk.BOTH)
         self.hsb_distance = ttk.Scale(container,
                                         from_ = 30,
                                         to = 0,
@@ -122,6 +125,9 @@ class View(tk.Tk):
         self.lbl_sensor_current = {}
         self.fra_sensor_values = {}
 
+        self.img_sensor = tk.PhotoImage(file = './sensor.png')
+        self.img_sensor = self.img_sensor.subsample(3,3)
+
         self.init_sensor(container, 1)
         self.init_sensor(container, 2)
         self.init_sensor(container, 3)
@@ -131,6 +137,13 @@ class View(tk.Tk):
         """
         Creates all widgets for a specific sensor "sensor_number" on the container
         """
+
+        frm_sensor_image = tk.Canvas(container,
+                                     width = 100, height =  30)
+        frm_sensor_image.grid(row = str(sensor_number + 1),
+                              column = "3")
+        frm_sensor_image.create_image(50, 15, image = self.img_sensor)
+
         self.bool_sensor_auto[sensor_number-1] = tk.BooleanVar()
         self.bool_sensor_auto[sensor_number-1].set(self.model.sensor_auto[sensor_number-1])
         self.chk_sensor_auto[sensor_number-1] = ttk.Checkbutton(container,
@@ -156,6 +169,8 @@ class View(tk.Tk):
         self.txt_sensor_distance[sensor_number-1] = tk.Entry(self.fra_sensor_values[sensor_number-1],
                                                             width = 5,
                                                             textvariable = self.str_sensor_distance[sensor_number-1])
+        self.txt_sensor_distance[sensor_number-1].bind("<Return>", self.controller.update_sensor_distance)
+        self.txt_sensor_distance[sensor_number-1].bind("<FocusOut>", self.controller.update_sensor_distance)
         self.txt_sensor_distance[sensor_number-1].pack(side = "left")
 
         self.lbl_sensor[sensor_number-1] = ttk.Label(self.fra_sensor_values[sensor_number-1],
@@ -163,10 +178,10 @@ class View(tk.Tk):
         self.lbl_sensor[sensor_number-1].pack(side = "left")
 
         self.lbl_sensor_current[sensor_number-1] = ttk.Label(self.fra_sensor_values[sensor_number-1],
-                                                             width = 5)
+                                                             width = 3)
         self.lbl_sensor_current[sensor_number-1].pack(side = "left")
         sensor_current_unit = ttk.Label(self.fra_sensor_values[sensor_number-1],
-                                        text = " mA")
+                                        text = "/10 mA")
         sensor_current_unit.pack(side = "left")
         self.fra_sensor_values[sensor_number-1].grid(row = str(sensor_number + 1),
                                     column = "6")
