@@ -53,10 +53,10 @@ bool isDistanceSafe(uint8_t distance) {
 }
 
 /**
- * @brief Compares the distance with the safe distance.
+ * @brief Checks the retval value and returns the state value
  *
- * @param distance: value of the distance in (10*m)
- * @return true if 
+ * @param retVal: enumerator of return Value
+ * @return true if retVal ist E_NOT_OK or E_ERROR
  */
 bool isDistanceSafe_B(returnType_en retVal) {
     bool safe = false;
