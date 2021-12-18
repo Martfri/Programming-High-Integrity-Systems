@@ -66,10 +66,9 @@ returnType_en runVoter_A(sensor_t sensorReadings[], uint8_t* bestValue) {
  * @return returnType_en E_OK in case the best value was computed sucessfuly, else E_NOT_OK
  */
 
-returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B) {
+returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B, int32_t *ptr_flowControl) {
     returnType_en retVal = E_NOT_OK;
-
-    // bool opCondition = allSensorsOperational(sensorReadings);
+    *ptr_flowControl = *ptr_flowControl +1;  
 
     //attention rmoe: replace it by checking the state. This thing is done in sensors.c
     for (int sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {

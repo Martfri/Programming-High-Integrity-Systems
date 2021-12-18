@@ -31,7 +31,7 @@ int main_1() {
     //         int8_t reading[3];
 
     //         for (int i = 0; i < 3; i++) {
-    //             reading[i] = (rand() % (OPERATIONAL_CURR_MAX - 196 + 1)) + 196;
+    //             reading[i] = (rand() % (60 - 57 + 1)) + 57;
     //         }
 
     //         memcpy(client_message, reading, sizeof(reading));

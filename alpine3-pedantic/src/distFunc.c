@@ -53,6 +53,24 @@ bool isDistanceSafe(uint8_t distance) {
 }
 
 /**
+ * @brief Compares the distance with the safe distance.
+ *
+ * @param distance: value of the distance in (10*m)
+ * @return true if 
+ */
+bool isDistanceSafe_B(returnType_en retVal) {
+    bool safe = false;
+
+    if (retVal != E_NOT_OK && retVal != E_ERROR) {
+        safe = true;
+    } else {
+        safe = false;
+    }
+
+    return safe;
+}
+
+/**
  * @brief runs the implementation A of the current to distance conversion algorithm
  *
  * @param sensorReadings: Array of sensor readings
@@ -94,12 +112,12 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
  * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
  */
 
-returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[], bool* distanceIsSafe_B) {
+returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[], bool* distanceIsSafe_B, int32_t *ptr_flowControl) {
     int32_t votedValue_B = 0;
     float distance_B = 0;
     returnType_en retVal;
 
-    retVal = runVoter_B(sensorReadings, &votedValue_B);
+    retVal = runVoter_B(sensorReadings, &votedValue_B, ptr_flowControl);
 
 #ifdef DEBUG
     printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
@@ -111,7 +129,7 @@ returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[], bool* distanceI
     printf("BlockB Computed distance: %.2f m\n", (float)(distance_B / 10));
 #endif
 
-    *distanceIsSafe_B = isDistanceSafe(distance_B);
+    *distanceIsSafe_B = isDistanceSafe_B(retVal);
 
 #ifdef DEBUG
     printf("Distance is Safe: %s\n\n", *distanceIsSafe_B ? "TRUE" : "FALSE");
