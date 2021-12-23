@@ -84,7 +84,7 @@ class Model:
             elif self._sensor_distance[sensor_number-1] < 0:
                 self._sensor_distance[sensor_number-1] = 0
         if self.sensor_error[sensor_number-1]:
-            self._sensor_current[sensor_number-1] = random.choice([0, 2])
+            self._sensor_current[sensor_number-1] = random.randint(0, 39)
         else:
             self._sensor_current[sensor_number-1] = round(10 * (20 - 16/20*self._sensor_distance[sensor_number-1]))
         pass
@@ -106,6 +106,6 @@ class Model:
         data = np.array([self._sensor_current[0], self._sensor_current[1], self._sensor_current[2]], dtype = np.uint8).flatten()
 
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-            addr = ("172.27.245.27", 8080)
+            addr = ("127.0.0.1", 8080)
             s.sendto(data, addr)
         pass
