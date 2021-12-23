@@ -59,7 +59,7 @@ class View(tk.Tk):
         self.str_distance = tk.StringVar()
         self.str_distance.set(str(self.model.distance))
         self.txt_distance = tk.Entry(self.fra_distance,
-                                    width = "10",
+                                    width = "5",
                                     textvariable = self.str_distance)
         self.txt_distance.bind("<Return>", self.controller.update_str_distance)
         self.txt_distance.bind("<FocusOut>", self.controller.update_str_distance)
@@ -72,7 +72,7 @@ class View(tk.Tk):
         self.str_tolerance = tk.StringVar()
         self.str_tolerance.set(str(self.model.tolerance))
         self.txt_tolerance = tk.Entry(self.fra_distance,
-                                     width = "10",
+                                     width = "5",
                                      textvariable = self.str_tolerance)
         self.txt_tolerance.bind("<Return>", self.controller.update_str_tolerance)
         self.txt_tolerance.bind("<FocusOut>", self.controller.update_str_tolerance)

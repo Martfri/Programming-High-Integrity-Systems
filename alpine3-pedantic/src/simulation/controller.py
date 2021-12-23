@@ -15,7 +15,7 @@ class Controller:
         Gets called when the distance slider gets updated
         '''
         self.model.distance = float(self.view.hsb_distance.get())
-        self.view.str_distance.set(str(self.model.distance))
+        self.view.str_distance.set("{:.2f}".format(self.model.distance))
         self.view.frm_human.moveto(self.view.human, 475 - 500/30*self.model.distance, 0)
         self.view.frm_arrow.coords(self.view.line_arrow, 500 - 50/3*self.model.distance, 15, 690, 15)
 
@@ -69,11 +69,11 @@ class Controller:
         """
         self.model.calculate_all_sensor_values()
         if (self.model.sensor_auto[0]):
-            self.view.str_sensor_distance[0].set(str(self.model.sensor_distance[0]))
+            self.view.str_sensor_distance[0].set("{:.2f}".format(self.model.sensor_distance[0]))
         if (self.model.sensor_auto[1]):
-            self.view.str_sensor_distance[1].set(str(self.model.sensor_distance[1]))
+            self.view.str_sensor_distance[1].set("{:.2f}".format(self.model.sensor_distance[1]))
         if (self.model.sensor_auto[2]):
-            self.view.str_sensor_distance[2].set(str(self.model.sensor_distance[2]))
+            self.view.str_sensor_distance[2].set("{:.2f}".format(self.model.sensor_distance[2]))
         self.view.lbl_sensor_current[0]["text"] = str(self.model.sensor_current[0])
         self.view.lbl_sensor_current[1]["text"] = str(self.model.sensor_current[1])
         self.view.lbl_sensor_current[2]["text"] = str(self.model.sensor_current[2])
