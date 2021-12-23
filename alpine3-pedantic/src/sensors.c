@@ -37,6 +37,10 @@ returnType_en readSensors(int sockfd, sensor_t sensorReadings[]) {
         printf("ERROR: Failed to receive reading\n");
         return E_NOT_OK;
     }
+    else
+    {
+        printf("sensor message: %d %d %d \n" , sensorMsg[0], sensorMsg[1], sensorMsg[2]);
+    }
 
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         uint8_t reading = sensorMsg[sensorIdx];
