@@ -1,6 +1,5 @@
 #include <arpa/inet.h>
 #include <string.h>
-#include <sys/socket.h>
 
 #include "cli.h"
 #include "distFunc.h"
@@ -21,7 +20,7 @@ int main() {
     int32_t flowControl = 0;
 
 #ifdef DEBUG
-    printf("Starting Program\n");
+    (void) printf("Starting Program\n");
 
 #endif
 
@@ -29,7 +28,7 @@ int main() {
     socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
     if (socket_desc < 0) {
-        printf("ERROR: Failed to create socket\n");
+        (void) printf("ERROR: Failed to create socket\n");
         return -1;
     }
 
@@ -40,13 +39,13 @@ int main() {
 
     // Bind to the set port and IP:
     if (bind(socket_desc, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-        printf("ERROR: Couldn't bind to the port\n");
+        (void) printf("ERROR: Couldn't bind to the port\n");
         return -1;
     }
 
     /* Start keyboard listener thread */
     if (0 != pthread_create(&cliThread, (pthread_attr_t *)NULL, readCLI, (void *)&rcvdExitCmd)) {
-        printf("ERROR: Failed to create CLI thread, terminating program\n");
+        (void) printf("ERROR: Failed to create CLI thread, terminating program\n");
         exit(EXIT_FAILURE);
     }
 
@@ -60,27 +59,27 @@ int main() {
         retVal |= evaluateDistance_BlockB(sensorReadings, &distanceIsSafe_B, &flowControl);
 
         retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState);
-        printf("flowControl count is:%i\n", flowControl);
-        
+        (void) printf("flowControl count is:%i\n", flowControl);
+
 
         if (E_OK != retVal || flowControl != 1) {
             enterSafeState = true;
         }
 
         /* Display System Decision */
-        // attention: use void in front of the 
-        printf("\nGo To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
+        // attention: use void in front of the
+        (void) printf("\nGo To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
         sleep(1);
     }
 
     /* Wait For CLI thread to terminate */
     if (0 != pthread_join(cliThread, NULL)) {
-        printf("ERROR: Failed to wait for CLI thread to terminate\n");
+        (void) printf("ERROR: Failed to wait for CLI thread to terminate\n");
     }
 
     // Close the socket:
     close(socket_desc);
 
-    printf("Terminating program\n");
+    (void) printf("Terminating program\n");
     return 0;
 }

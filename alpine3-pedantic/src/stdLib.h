@@ -2,7 +2,7 @@
  * @file stdLib.h
  * @brief Implementats standard datatype for the whole project.
  *
- * @note 
+ * @note
  */
 #ifndef STDLIB_H
 #define STDLIB_H

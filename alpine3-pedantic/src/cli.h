@@ -2,7 +2,7 @@
  * @file cli.h
  * @brief Implements a command line interface .
  *
- * @note 
+ * @note
  */
 #ifndef CLI_H
 #define CLI_H
