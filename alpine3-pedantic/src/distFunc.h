@@ -2,12 +2,10 @@
  * @file distFunc.h
  * @brief Implementation of the current to distance convertion algorithms.
  *
- * @note 
+ * @note
  */
 #ifndef DIST_FUNC_H
 #define DIST_FUNC_H
-
-#include <stdint.h>
 
 #include "sensors.h"
 

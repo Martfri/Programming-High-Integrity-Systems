@@ -3,9 +3,11 @@ TARGET = phis
 
 # Compiler
 CC = gcc
+CDEFINES = gcc-defines.h
 
 # Linter
 LINT = flint
+LINTOUT = results_linter.txt
 
 # Compiler Options
 CFLAGS += -Wall		# Enables general warnings
@@ -18,10 +20,21 @@ CFLAGS += -pedantic # Enables warnings demanded by ISO C
 LDFLAGS += -lm		# Links Math Libraries
 LDFLAGS += -pthread	# Links POSIX threads library
 
+# Linter Options
+LINTFLAGS += -cgnu	# tell flint that gcc is used for compiling
+LINTFLAGS += -i'/usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/include;/usr/include'	# add gcc headers include path
+LINTFLAGS += -'header($(CDEFINES))'		# add gcc default defines
+LINTFLAGS += +'libh($(CDEFINES))'		# set as library
+LINTFLAGS += +'libclass(angle, ansi)' 	# make sure only external headers are viewed as libraries
+LINTFLAGS += -'wlib(1)'		# only output errors for library files
+LINTFLAGS += -'elib(1*)'	# get rid of remaining library errors
+LINTFLAGS += +v		# enable output to stdout and stderr
+
 .PHONY: default all clean lint
 
-default: $(TARGET)
-all: default
+default: build
+all: lint build
+build: $(TARGET)
 
 OBJ=$(patsubst %.c, %.o, $(wildcard *.c))
 HDR=$(wildcard *.h)
@@ -37,7 +50,8 @@ $(TARGET): $(OBJ)
 	-rm -f *.o
 
 clean:
-	-rm -f $(TARGET)
-	
+	-rm -f $(TARGET) $(LINTOUT) $(CDEFINES)
+
 lint:
-	$(LINT) $(SRC) $(HDR)
+	$(shell echo "" | gcc -dM -E - > $(CDEFINES))
+	$(LINT) $(LINTFLAGS) $(SRC) > $(LINTOUT)

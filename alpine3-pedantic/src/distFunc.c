@@ -11,7 +11,7 @@
  */
 uint8_t computeDistance_A(uint8_t currentValue) {
 #ifdef DEBUG
-    printf("Voted Current A: %d (10*mA)\n", currentValue);
+    (void) printf("Voted Current A: %d (10*mA)\n", currentValue);
 #endif
 
     /* 10cm precision loss. Ex: 0.38m is truncated to 0.30m*/
@@ -26,7 +26,7 @@ uint8_t computeDistance_A(uint8_t currentValue) {
 float computeDistance_B(float votedValue_B) {
     // attention rmoe: use constants, macros
     float yOffset = SensChar_Offset;             // 25m
-    
+
     float gradient = SensChar_MaxDist / SensChar_DelCurrent;  // 20m/16mA
 
     float distance_B = yOffset - ((float)(votedValue_B)*gradient);  //Transferfunction of sensor
@@ -38,7 +38,7 @@ float computeDistance_B(float votedValue_B) {
  * @brief Compares the distance with the safe distance.
  *
  * @param distance: value of the distance in (10*m)
- * @return true if 
+ * @return true if
  */
 bool isDistanceSafe(uint8_t distance) {
     bool safe = false;
@@ -92,12 +92,12 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
         retVal = E_OK;
 
 #ifdef DEBUG
-        printf("BlockA Computed distance: %.2f m\n", ((float)distance) / 10.0);
-        printf("Distance is Safe A: %s\n\n", *distanceIsSafe_A ? "TRUE" : "FALSE");
+        (void) printf("BlockA Computed distance: %.2f m\n", ((float)distance) / 10.0);
+        (void) printf("Distance is Safe A: %s\n\n", *distanceIsSafe_A ? "TRUE" : "FALSE");
 #endif
 
     } else {
-        printf("Sensors did not provide reliable readings\n\n");
+        (void) printf("Sensors did not provide reliable readings\n\n");
         retVal = E_NOT_OK;
     }
 
@@ -120,19 +120,19 @@ returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[], bool* distanceI
     retVal = runVoter_B(sensorReadings, &votedValue_B, ptr_flowControl);
 
 #ifdef DEBUG
-    printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
+    (void) printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
 #endif
 
     distance_B = computeDistance_B(votedValue_B);
 
 #ifdef DEBUG
-    printf("BlockB Computed distance: %.2f m\n", (float)(distance_B / 10));
+    (void) printf("BlockB Computed distance: %.2f m\n", (float)(distance_B / 10));
 #endif
 
     *distanceIsSafe_B = isDistanceSafe_B(retVal);
 
 #ifdef DEBUG
-    printf("Distance is Safe: %s\n\n", *distanceIsSafe_B ? "TRUE" : "FALSE");
+    (void) printf("Distance is Safe: %s\n\n", *distanceIsSafe_B ? "TRUE" : "FALSE");
 #endif
 
     return retVal;

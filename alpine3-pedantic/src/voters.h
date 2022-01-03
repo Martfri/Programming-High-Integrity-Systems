@@ -2,11 +2,10 @@
  * @file voters.h
  * @brief Implementation of the voting algorithms.
  *
- * @note 
+ * @note
  */
 #ifndef VOTERS_H
 #define VOTERS_H
-#include <stdint.h>
 
 #include "sensors.h"
 
@@ -17,16 +16,16 @@
  * @param bestValue: pointer to a variable to hold best value from all the readings
  * @return returnType_en E_OK in case the best value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en runVoter_A(sensor_t sensorReadings[], uint8_t* bestValue);
+returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue);
 
 /**
  * @brief runs the implementation of second stage voter
  *
  * @param sensorReadings: Array of sensor readings
- * @param votedValue_B: pointer to a variable that holds the voted value 
+ * @param votedValue_B: pointer to a variable that holds the voted value
  * @return returnType_en E_OK in case the voted value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en runVoter_B(sensor_t sensorReadings[], int32_t* votedValue_B, int32_t *ptr_flowControl);
+returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B, int32_t *ptr_flowControl);
 
 /**
  * @brief
