@@ -60,26 +60,18 @@ int main() {
 
         retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState);
         (void) printf("flowControl count is:%i\n", flowControl);
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> e1516e82d728953741dbbcf6c6e8ddc9ed29b348
 
         if (E_OK != retVal || flowControl != 1) {
             enterSafeState = true;
         }
 
         /* Display System Decision */
-<<<<<<< HEAD
         // attention: use void in front of the 
         (void) printf("\nGo To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
         // sleep(1);
-=======
         // attention: use void in front of the
         (void) printf("\nGo To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
         sleep(1);
->>>>>>> e1516e82d728953741dbbcf6c6e8ddc9ed29b348
     }
 
     /* Wait For CLI thread to terminate */
