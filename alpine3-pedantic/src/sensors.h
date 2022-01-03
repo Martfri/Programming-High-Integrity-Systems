@@ -49,6 +49,16 @@ typedef struct sensor_t {
  */
 returnType_en readSensors(int sockfd, sensor_t sensorReadings[]);
 
+/**
+ * @brief Loops through all the sensor and fills the array of readings with
+ * the sensor readings. In case a fault sensor is detected,
+ * its state is set to SENSOR_NOT_OK and the reading to 0.
+ *
+ * @param sensorMsg: Array of sensor values
+ * @param sensorReadings: Array of sensor readings
+ */
+void evaluateSensors(uint8_t sensorMsg[], sensor_t sensorReadings[]);
+
 void *sensorMsgStub(void *_rcvdExitCmd);
 
 #endif
