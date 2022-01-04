@@ -1,0 +1,7 @@
+mkdir docker_phis
+cp Dockerfile_phis docker_phis/Dockerfile
+cd docker_phis
+docker build --rm -t phis .
+cd ..
+rm -r docker_phis
+chmod 777 docker_phis_run
