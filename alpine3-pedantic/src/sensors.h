@@ -57,7 +57,7 @@ returnType_en readSensors(int sockfd, sensor_t sensorReadings[]);
  * @param sensorMsg: Array of sensor values
  * @param sensorReadings: Array of sensor readings
  */
-void evaluateSensors(uint8_t sensorMsg[], sensor_t sensorReadings[]);
+void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]);
 
 void *sensorMsgStub(void *_rcvdExitCmd);
 
