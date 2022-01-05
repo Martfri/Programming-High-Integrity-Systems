@@ -1,3 +1,4 @@
+/* Linter error description: https://www.kessler.de/prd/gimpel/pclint-meldungen.htm */
 #include <arpa/inet.h>
 
 #include "cli.h"
