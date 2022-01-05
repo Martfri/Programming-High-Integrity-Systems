@@ -97,7 +97,9 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
 #endif
 
     } else {
+#ifdef DEBUG
         (void) printf("Sensors did not provide reliable readings\n\n");
+#endif
         retVal = E_NOT_OK;
     }
 

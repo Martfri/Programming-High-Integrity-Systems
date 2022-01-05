@@ -46,12 +46,16 @@ returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue) {
             *bestValue = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
             retVal = E_OK;
         } else {
+#ifdef DEBUG
             (void) printf("Sensor threshold is greater than allowed.\n");
+#endif
             /* If any diff is more than 2 means one of the sensors is faulty*/
             retVal = E_NOT_OK;
         }
     } else {
+#ifdef DEBUG
         (void) printf("Not all the sensors are operational.\n");
+#endif
         retVal = E_NOT_OK;
     }
 
@@ -76,8 +80,9 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
         {
             sensorIdx = NR_OF_SENSORS;
             retVal = E_ERROR;
-
+#ifdef DEBUG
             (void) printf("A sensor value is < OPERATIONAL_CURR_MIN.\n");
+#endif
         }
         else
         {
@@ -86,7 +91,9 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
     }
 
     if (sensorReadings[0].reading > OPERATIONAL_CURR_MAX || sensorReadings[1].reading > OPERATIONAL_CURR_MAX || sensorReadings[2].reading > OPERATIONAL_CURR_MAX) {
+#ifdef DEBUG
         (void) printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");
+#endif
         retVal = E_ERROR;
     }
     else
@@ -105,7 +112,9 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
         }
         else
         {
+#ifdef DEBUG
             (void) printf("Sensor values are not within SENSOR_ACCURACY.\n");
+#endif
             *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
             //printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
             retVal = E_NOT_OK;

@@ -5,9 +5,10 @@ import RandomNumberGenerator
 import Voter1
 import Voter2
 import Voter3
-import Integration
-import socket 
+from Integration import Integration
+import socket
 import subprocess
+import time
 
 voterLibFile = os.getcwd()+'/phis.so'
 
@@ -36,7 +37,7 @@ def testVoterA(voterLib, logFile) -> bool:
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
-    print([sensor1, sensor2, sensor3])
+    #print([sensor1, sensor2, sensor3])
     expectedResult = Voter1.voter1([sensor1, sensor2, sensor3])
     voterResult = runVoterA(voterLib, sensor1, sensor2, sensor3)
     if voterResult == expectedResult:
@@ -99,14 +100,12 @@ def runSystem(sensor1, sensor2, sensor3, process) -> bool:
         process.stdin.write(b'q\n')
         sys.exit(-1)
 
-def testIntegration(voterLib, logFile) -> bool:
+def testIntegration(voterLib, logFile, process) -> bool:
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
-    print([sensor1, sensor2, sensor3])
-    p = subprocess.Popen("./phis_test", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-    ImplementationResult = runSystem(sensor1, sensor2, sensor3, p)
-    p.stdin.write(b'q\n')
+    # print([sensor1, sensor2, sensor3])
+    ImplementationResult = runSystem(sensor1, sensor2, sensor3, process)
     expectedResult = Integration(sensor1, sensor2, sensor3)
     if ImplementationResult == expectedResult:
         return True
@@ -155,7 +154,7 @@ def main() -> int:
     else:
         numFailedTestsVoter3 = numFailedTestsVoter3+ 1
         numTestsVoter3 = numTestsVoter3 + 1
-    
+
     if testVoter3(voterLib, logFile, False, True):
         numTestsVoter3 = numTestsVoter3 + 1
     else:
@@ -177,12 +176,15 @@ def main() -> int:
     # system / integration test
     print("Test System/ Integration:")
     logFile.write("Failed Tests for System/ Integration Test:\n")
+    p = subprocess.Popen("./phis_test", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     for _ in range(200):
-        if testIntegration(voterLib, logFile):
+        if testIntegration(voterLib, logFile, p):
             numTestsIntegration = numTestsIntegration+ 1
         else:
             numFailedTestsIntegration = numFailedTestsIntegration + 1
             numTestsIntegration = numTestsIntegration+ 1
+        print(f"{numTestsIntegration} from 200")
+    p.stdin.write(b'q\n')
 
     # prints for Voter A
     print(f"Test Voter A: {numFailedTestsVoterA} from {numTestsVoterA} tests failed")
@@ -195,7 +197,7 @@ def main() -> int:
     # prints for Voter 3
     print(f"Test Voter 3: {numFailedTestsVoter3} from {numTestsVoter3} tests failed")
     logFile.write(f"Test Voter B: {numFailedTestsVoter3} from {numTestsVoter3} tests failed\n\n")
-    
+
     # prints for System / Integration Test
     if (numFailedTestsIntegration == 0):
         print(f"System/ Integration Test: All tests passed (With {numTestsIntegration} tests in total)")

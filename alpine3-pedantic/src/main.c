@@ -69,7 +69,8 @@ int main() {
 
         /* Display System Decision */
         // attention: use void in front of the
-        (void) printf("Go To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
+        (void) printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
+        fflush(stdout);
         sleep(1);
     }
 
