@@ -1,0 +1,6 @@
+Failed Tests for voter A:
+Sensor values: (100, 100, 100), Voter A returned False, expected True
+Sensor values: (100, 100, 100), Voter A returned False, expected True
+2 from 2 tests failed
+
+Summary: 2 from 2 tests failed
