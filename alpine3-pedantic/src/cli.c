@@ -3,7 +3,7 @@
 #include "stdLib.h"
 
 /**
- * @brief runs the implementation A of the current to distance conversion algorithm
+ * @brief reads from the console
  *
  * @param _rcvdExitCmd pointer to a variable that signals the program must terminate
  */
@@ -16,7 +16,7 @@ void *readCLI(void *_rcvdExitCmd) {
 
     while (false == *rcvdExitCmd) {
         length = 0;
-        while ((line[length] = getchar()) != '\n') {
+        while ((line[length] = (char)getchar()) != '\n') {
             length++;
             if (length >= 49)
                 break;
@@ -25,12 +25,12 @@ void *readCLI(void *_rcvdExitCmd) {
 
         if ((line[0] == 'q') && (strlen(line) == 1)) {
             *rcvdExitCmd = true;
-            (void) printf("Stopped by user\n");
+            (void)printf("Stopped by user\n");
         }
     }
 
 #ifdef DEBUG
-    (void) printf("CLI thread terminating\n");
+    (void)printf("CLI thread terminating\n");
 #endif
 
     return NULL;
