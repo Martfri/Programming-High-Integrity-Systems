@@ -78,7 +78,7 @@ def main() -> int:
     # unit test voter 3
 
     # system / integration test
-    p = subprocess.Popen("../phis", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    p = subprocess.Popen("./phis_test", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     runSystem(100, 100, 100, p)
     p.stdin.write(b'q\n')
 
