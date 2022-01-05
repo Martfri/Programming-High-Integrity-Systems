@@ -32,8 +32,9 @@ bool allSensorsOperational(sensor_t const sensorReadings[]) {
  * @param bestValue: pointer to a variable to hold best value from all the readings
  * @return returnType_en E_OK in case the best value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue) {
+returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, int32_t *ptr_flowControl) {
     returnType_en retVal = E_NOT_OK;
+    *ptr_flowControl = *ptr_flowControl +1;
 
     // for (int i = 0; i < 3; i++) printf("value %d: %d\n", i, sensorReadings[i].reading);
 
@@ -70,7 +71,6 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
     returnType_en retVal = E_NOT_OK;
     *ptr_flowControl = *ptr_flowControl +1;
 
-    //attention rmoe: replace it by checking the state. This thing is done in sensors.c
     for (int sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         if (sensorReadings[sensorIdx].reading < OPERATIONAL_CURR_MIN)  //checks, if there is a sensor with current value below Operational_CURR_MIN
         {
@@ -121,7 +121,8 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
  * @param
  * @return
  */
-returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState) {
+returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState, int32_t *ptr_flowControl) {
+    *ptr_flowControl = *ptr_flowControl + 1;
     *enterSafeState = !distanceIsSafe_A | !distanceIsSafe_B;
     return E_OK;
 }

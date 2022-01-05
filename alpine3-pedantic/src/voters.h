@@ -16,7 +16,7 @@
  * @param bestValue: pointer to a variable to hold best value from all the readings
  * @return returnType_en E_OK in case the best value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue);
+returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, int32_t *ptr_flowControl);
 
 /**
  * @brief runs the implementation of second stage voter
@@ -35,5 +35,5 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
  * @param enterSafeState result of the stage 2 voter
  * @return E_OK in case of success, otherwise E_NOT_OK
  */
-returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState);
+returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState, int32_t *ptr_flowControl);
 #endif

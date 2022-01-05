@@ -54,16 +54,16 @@ int main() {
         flowControl = 0;
         readSensors(socket_desc, sensorReadings);
 
-        retVal = evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A);
+        retVal = evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A, &flowControl);
 
         retVal |= evaluateDistance_BlockB(sensorReadings, &distanceIsSafe_B, &flowControl);
 
-        retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState);
+        retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState, &flowControl);
 #ifdef DEBUG
         (void) printf("flowControl count is:%i\n", flowControl);
 #endif
 
-        if (E_OK != retVal || flowControl != 1) {
+        if (E_OK != retVal || flowControl != 5) {
             enterSafeState = true;
         }
 

@@ -77,12 +77,13 @@ bool isDistanceSafe_B(returnType_en retVal) {
  * @param distance: pointer to a variable to hold the converted distance value
  * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceIsSafe_A) {
+returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceIsSafe_A, int32_t *ptr_flowControl) {
     uint8_t votedValue = 0;
     uint8_t distance = 0;
     returnType_en retVal;
+    *ptr_flowControl = *ptr_flowControl + 1;
 
-    retVal = runVoter_A(sensorReadings, &votedValue);
+    retVal = runVoter_A(sensorReadings, &votedValue, ptr_flowControl);
 
     if (E_OK == retVal) {
         /*TODO evaluate computed value*/
@@ -115,6 +116,8 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
 returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[], bool* distanceIsSafe_B, int32_t *ptr_flowControl) {
     int32_t votedValue_B = 0;
     returnType_en retVal;
+
+    *ptr_flowControl = *ptr_flowControl + 1;
 
     retVal = runVoter_B(sensorReadings, &votedValue_B, ptr_flowControl);
 

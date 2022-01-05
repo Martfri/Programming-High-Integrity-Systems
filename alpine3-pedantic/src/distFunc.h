@@ -16,7 +16,7 @@
  * @param distanceIsSafe_A: pointer to a variable to signal if there is a threat nearby
  * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceIsSafe_A);
+returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceIsSafe_A, int32_t* ptr_flowControl);
 
 /**
  * @brief
