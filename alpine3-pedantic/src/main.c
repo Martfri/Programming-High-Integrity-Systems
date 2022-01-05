@@ -82,8 +82,8 @@ int main() {
         (void)printf("flowControl count is:%i\n", flowControl);
 #endif
 
-        if (E_OK != retVal || flowControl != 5) {
-            enterSafeState = true;
+        if (E_OK == retVal && flowControl == 5) {
+            enterSafeState = false;
         }
 
         /* Display System Decision */
