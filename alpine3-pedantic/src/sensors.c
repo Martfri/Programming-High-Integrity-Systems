@@ -38,7 +38,9 @@ returnType_en readSensors(int sockfd, sensor_t sensorReadings[]) {
     }
     else
     {
+#ifdef DEBUG
         printf("sensor message: %d %d %d \n" , sensorMsg[0], sensorMsg[1], sensorMsg[2]);
+#endif
     }
 
     evaluateSensors(sensorMsg, sensorReadings);

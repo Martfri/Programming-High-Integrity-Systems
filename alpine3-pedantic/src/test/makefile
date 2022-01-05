@@ -34,7 +34,7 @@ HDR=$(wildcard *.h)
 
 $(TARGET): $(OBJ)
 	$(CC)  $(OBJ) $(LDFLAGS) -o $@
-	-rm -f *.o
+	-rm -f ../*.o
 
 clean:
 	-rm -f $(TARGET)

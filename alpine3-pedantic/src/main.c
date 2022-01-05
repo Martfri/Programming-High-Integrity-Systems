@@ -59,18 +59,17 @@ int main() {
         retVal |= evaluateDistance_BlockB(sensorReadings, &distanceIsSafe_B, &flowControl);
 
         retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState);
+#ifdef DEBUG
         (void) printf("flowControl count is:%i\n", flowControl);
+#endif
 
         if (E_OK != retVal || flowControl != 1) {
             enterSafeState = true;
         }
 
         /* Display System Decision */
-        // attention: use void in front of the 
-        (void) printf("\nGo To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
-        // sleep(1);
         // attention: use void in front of the
-        (void) printf("\nGo To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
+        (void) printf("Go To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
         sleep(1);
     }
 

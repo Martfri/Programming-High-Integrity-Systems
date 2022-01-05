@@ -18,7 +18,9 @@
 /**
  * @brief Enables debug mode
  */
+#ifndef TEST
 #define DEBUG
+#endif
 
 /**
  * @brief returnType enumeration

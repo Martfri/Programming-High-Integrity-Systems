@@ -114,7 +114,6 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
 
 returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[], bool* distanceIsSafe_B, int32_t *ptr_flowControl) {
     int32_t votedValue_B = 0;
-    float distance_B = 0;
     returnType_en retVal;
 
     retVal = runVoter_B(sensorReadings, &votedValue_B, ptr_flowControl);
@@ -123,9 +122,10 @@ returnType_en evaluateDistance_BlockB(sensor_t sensorReadings[], bool* distanceI
     (void) printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
 #endif
 
-    distance_B = computeDistance_B(votedValue_B);
+
 
 #ifdef DEBUG
+    int32_t distance_B = computeDistance_B(votedValue_B);
     (void) printf("BlockB Computed distance: %.2f m\n", (float)(distance_B / 10));
 #endif
 

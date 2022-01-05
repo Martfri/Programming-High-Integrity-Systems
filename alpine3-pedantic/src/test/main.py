@@ -39,13 +39,21 @@ def testVoterA(voterLib, logFile) -> bool:
         logFile.write(f"Sensor values: ({sensor1}, {sensor1}, {sensor1}), Voter A returned {voterResult}, expected {expectedResult}\n")
         return False
 
-def runSystem(sensor1, sensor2, sensor3, buffer) -> bool:
+def runSystem(sensor1, sensor2, sensor3, process) -> bool:
     input = Uint8Array3(sensor1, sensor2, sensor3)
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         addr = ("127.0.0.1", 8080)
         s.sendto(input, addr)
-    output = buffer.readlines(1)
-    print(output)
+    output = process.stdout.readlines(1)
+    if output == [b'Go To Safe State: TRUE\n']:
+        return True
+    elif output == [b'Go To Safe State: FALSE\n']:
+        return False
+    else:
+        print("Did not expect this result:")
+        print(output)
+        process.stdin.write(b'q\n')
+        sys.exit(-1)
 
 def main() -> int:
     numFailedTests = 0
@@ -70,8 +78,9 @@ def main() -> int:
     # unit test voter 3
 
     # system / integration test
-    p = subprocess.Popen("../phis", stdout=subprocess.PIPE)
-    runSystem(100, 100, 100, p.stdout)
+    p = subprocess.Popen("../phis", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    runSystem(100, 100, 100, p)
+    p.stdin.write(b'q\n')
 
     if (numFailedTests == 0):
         print(f"Summary: All tests passed (With {numTests} tests in total)")
