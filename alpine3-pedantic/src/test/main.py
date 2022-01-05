@@ -74,9 +74,12 @@ def testVoter3(voterLib, logFile, input1, input2) -> bool:
     enterSafeState = c_bool(True)
     expectedResult = Voter3.voter3(input1, input2)
     voterResult = voterLib.runStage2Voter(input1, input2, pointer(enterSafeState))
+    print(f"Input for voter3: {input1}, {input2}")
     if bool(enterSafeState) == expectedResult:
+        print("Outcome of Voter 3 matched expected result")
         return True
     else:
+        print("Outcome of Voter 3 didn't match expected result")
         logFile.write(f"Voter 1 and 2 inputs: ({input1}, {input2}), Voter 3 returned {voterResult}, expected {expectedResult}\n")
         return False
 
