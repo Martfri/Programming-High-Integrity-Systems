@@ -10,9 +10,13 @@
 //Warning 537: Repeated include file 'stdLib.h - Since stdLib has include guards, this is not a problem
 #include "stdLib.h"  //lint !e537
 #include "voters.h"
+#include "time.h"
 
 #define PORT 8080
 #define IP "127.0.0.1"
+
+#define CONVERT_TO_MS 1000
+#define CONVERT_TO_US 1000000
 
 int main() {
     returnType_en retVal;
@@ -22,6 +26,9 @@ int main() {
     int socket_desc;
     struct sockaddr_in server_addr;
     int32_t flowControl = 0;
+
+    clock_t start, end; //for the measurement of the time it takes to execute one while loop
+    double cpu_time_used;
 
 #ifdef DEBUG
     (void)printf("Starting Program\n");
@@ -70,6 +77,8 @@ int main() {
       cast to some type, this message is not given.
     */
     while (false == rcvdExitCmd) {  //lint !e731
+        start = clock();
+
         flowControl = 0;
         retVal = readSensors(socket_desc, sensorReadings);
 
@@ -88,8 +97,16 @@ int main() {
 
         /* Display System Decision */
         // attention: use void in front of the
-        (void)printf("Go To Safe State: %s\n\n", enterSafeState ? "TRUE" : "FALSE");
+        (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
         (void)sleep(1);  // TODO check if it is needed
+
+        end = clock();
+        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC * CONVERT_TO_US; //measures the time for execuiting a single while loop
+
+//#ifdef DEBUG
+        (void)printf("The iteration took %.1f microeconds to execute \n\n", cpu_time_used);
+//#endif
+
     }
 
     /* Wait For CLI thread to terminate */
