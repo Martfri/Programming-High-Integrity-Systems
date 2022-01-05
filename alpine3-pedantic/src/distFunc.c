@@ -26,7 +26,7 @@ static uint8_t computeDistance_A(uint8_t currentValue) {
     return distance;
 }
 
-float computeDistance_B(float votedValue_B) {
+float computeDistance_B(int32_t votedValue_B) {
     // attention rmoe: use constants, macros
     float yOffset = SensChar_Offset;  // 25m
 
@@ -129,8 +129,8 @@ returnType_en evaluateDistance_BlockB(sensor_t const sensorReadings[], bool* dis
 #endif
 
 #ifdef DEBUG
-    int32_t distance_B = computeDistance_B(votedValue_B);
-    (void)printf("BlockB Computed distance: %.2f m\n", (float)(distance_B / 10));
+    float distance_B = computeDistance_B(votedValue_B);
+    (void)printf("BlockB Computed distance: %.2f m\n", (float)(distance_B / Sens_Scaler));
 #endif
 
     *distanceIsSafe_B = isDistanceSafe_B(retVal);
