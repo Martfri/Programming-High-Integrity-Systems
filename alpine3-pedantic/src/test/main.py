@@ -1,6 +1,8 @@
 from ctypes import *
 import os
 import sys
+import socket
+import subprocess
 
 voterLibFile = os.getcwd()+'/phis.so'
 
@@ -8,6 +10,7 @@ class sensor_t(Structure):
     _fields_ = [("state", c_uint),
                    ("reading", c_uint8)]
 
+Uint8Array3 = c_uint8 * 3
 Uint8Array4 = c_uint8 * 4
 SensorArray3 = sensor_t * 3
 
@@ -36,6 +39,14 @@ def testVoterA(voterLib, logFile) -> bool:
         logFile.write(f"Sensor values: ({sensor1}, {sensor1}, {sensor1}), Voter A returned {voterResult}, expected {expectedResult}\n")
         return False
 
+def runSystem(sensor1, sensor2, sensor3, buffer) -> bool:
+    input = Uint8Array3(sensor1, sensor2, sensor3)
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        addr = ("127.0.0.1", 8080)
+        s.sendto(input, addr)
+    output = buffer.readlines(1)
+    print(output)
+
 def main() -> int:
     numFailedTests = 0
     numTests = 0
@@ -58,7 +69,9 @@ def main() -> int:
 
     # unit test voter 3
 
-    # integration test
+    # system / integration test
+    p = subprocess.Popen("../phis", stdout=subprocess.PIPE)
+    runSystem(100, 100, 100, p.stdout)
 
     if (numFailedTests == 0):
         print(f"Summary: All tests passed (With {numTests} tests in total)")
