@@ -1,5 +1,6 @@
 # Executable Target Name
-TARGET = phis.so
+TARGET_SO = phis.so
+TARGET_BIN = phis_test
 
 # Compiler
 CC = gcc
@@ -21,7 +22,7 @@ LDFLAGS += -shared
 
 default: test
 all: test
-build: $(TARGET)
+build: $(TARGET_SO)
 
 SRC=../voters.c ../distFunc.c ../sensors.c
 OBJ=$(patsubst %.c, %.o, $(SRC))
@@ -32,12 +33,16 @@ HDR=$(wildcard *.h)
 
 .PRECIOUS: $(TARGET) $(OBJ)
 
-$(TARGET): $(OBJ)
+$(TARGET_SO): $(OBJ)
 	$(CC)  $(OBJ) $(LDFLAGS) -o $@
 	-rm -f ../*.o
 
-clean:
-	-rm -f $(TARGET)
+$(TARGET_BIN):
+	cd .. && make test/$(TARGET_BIN)
 
-test: build
+clean:
+	-rm -f $(TARGET_SO)
+
+test: build $(TARGET_BIN)
 	python3 main.py
+	-rm -f $(TARGET_BIN)
