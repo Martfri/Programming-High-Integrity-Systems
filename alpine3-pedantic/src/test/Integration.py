@@ -3,13 +3,13 @@ import Voter2
 import Voter3
 
 
-def Integration(s1, s2, s3):
-    ConsideredValue = 0 
+def Integration(s1, s2, s3) -> bool:
+    ConsideredValue = 0
     SensorValues = [s1, s2, s3]
-    print(SensorValues)
+    #print(SensorValues)
     Safestate = True
     Operational = False
-    FlowControl = 0 
+    FlowControl = 0
 
     OutcomeVoter1 = Voter1.voter1(SensorValues)
     OutcomeVoter2 = Voter2.voter2(SensorValues)
@@ -23,7 +23,7 @@ def Integration(s1, s2, s3):
         Safestate = False
         Operational = True
 
-    print("Roboter is in Safestate: %s" %"True" if Safestate else "Roboter is in Safestate: False")
-    print("h")
+    #print("Roboter is in Safestate: %s" %"True" if Safestate else "Roboter is in Safestate: False")
+    #print("h")
 
-    return 0
+    return Safestate

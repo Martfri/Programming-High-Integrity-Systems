@@ -12,6 +12,7 @@ CFLAGS += -Werror	# Makes all warnings into errors
 CFLAGS += -O1		# optimize for code size and execution time
 CFLAGS += -pedantic # Enables warnings demanded by ISO C
 CFLAGS += -fPIC
+CFLAGS += -DTEST
 
 # Linker Options
 #LDFLAGS += -lm		# Links Math Libraries

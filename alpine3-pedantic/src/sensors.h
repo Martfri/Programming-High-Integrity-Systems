@@ -14,11 +14,11 @@
 #define OPERATIONAL_CURR_MAX (20 * 10)  // in 10*mA
 #define SENSOR_ACCURACY (0.2 * 10)      // in 10*mA
 
-#define SensChar_Offset 250.0f          // Offset for calc. transferfct.
-#define SensChar_MaxDist 200.0f        // Max. sensor distance
-#define SensChar_DelCurrent 160.0f     // in 10*mA
+#define SensChar_Offset 250.0f      // Offset for calc. transferfct.
+#define SensChar_MaxDist 200.0f     // Max. sensor distance
+#define SensChar_DelCurrent 160.0f  // in 10*mA
 
-#define SENSOR_TRANSFER_FUNC(current) (-1.25 * current + 25)            // in mA to meters
+// #define SENSOR_TRANSFER_FUNC(current) (-1.25 * current + 25)            // in mA to meters
 #define SENSOR_SCALED_TRANSFER_FUNC(current) (-1.25 * current + 250.0)  // in 10*mA to 10*
 
 #define MIN_SAFE_DISTANCE (2 * 10)  // in 10*m
@@ -49,16 +49,14 @@ typedef struct sensor_t {
  */
 returnType_en readSensors(int sockfd, sensor_t sensorReadings[]);
 
-/**
- * @brief Loops through all the sensor and fills the array of readings with
- * the sensor readings. In case a fault sensor is detected,
- * its state is set to SENSOR_NOT_OK and the reading to 0.
- *
- * @param sensorMsg: Array of sensor values
- * @param sensorReadings: Array of sensor readings
- */
-void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]);
-
-void *sensorMsgStub(void *_rcvdExitCmd);
+// /**
+//  * @brief Loops through all the sensor and fills the array of readings with
+//  * the sensor readings. In case a fault sensor is detected,
+//  * its state is set to SENSOR_NOT_OK and the reading to 0.
+//  *
+//  * @param sensorMsg: Array of sensor values
+//  * @param sensorReadings: Array of sensor readings
+//  */
+// static void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]);
 
 #endif
