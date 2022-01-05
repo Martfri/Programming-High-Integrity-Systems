@@ -1,5 +1,6 @@
 # Executable Target Name
 TARGET = phis
+TARGET_TEST = phis_test
 
 # Compiler
 CC = gcc
@@ -30,13 +31,17 @@ LINTFLAGS += -'wlib(1)'		# only output errors for library files
 LINTFLAGS += -'elib(1*)'	# get rid of remaining library errors
 LINTFLAGS += +v		# enable output to stdout and stderr
 
-.PHONY: default all clean lint
+# Test directory
+TESTDIR = test/
+
+.PHONY: default all clean lint test
 
 default: build
-all: lint build
+all: lint test build
 build: $(TARGET)
 
 OBJ=$(patsubst %.c, %.o, $(wildcard *.c))
+TESTOBJ=$(patsubst %.c, $(TESTDIR)%.o, $(wildcard *.c))
 HDR=$(wildcard *.h)
 SRC=$(wildcard *.c)
 
@@ -48,6 +53,21 @@ SRC=$(wildcard *.c)
 $(TARGET): $(OBJ)
 	$(CC)  $(OBJ) $(LDFLAGS) -o $@
 	-rm -f *.o
+
+# Builing binary for testing
+$(TESTDIR)%.o: %.c $(HDR)
+	$(CC) $(CFLAGS) -DTEST -c $< -o $@
+
+.PRECIOUS: $(TARGET) $(TESTOBJ)
+
+$(TESTDIR)$(TARGET_TEST): $(TESTOBJ)
+	$(CC)  $(TESTOBJ) $(LDFLAGS) -o $@
+	-rm -f $(TESTDIR)*.o
+
+test: $(TESTDIR)$(TARGET_TEST)
+	cd $(TESTDIR) && make all
+	-rm -f $(TARGET_TEST)
+
 
 clean:
 	-rm -f $(TARGET) $(LINTOUT) $(CDEFINES)

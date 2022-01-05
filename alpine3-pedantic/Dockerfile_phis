@@ -1,0 +1,3 @@
+FROM alpine3-pedantic
+
+RUN apk add python3
