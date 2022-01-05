@@ -72,38 +72,41 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
     returnType_en retVal = E_NOT_OK;
     *ptr_flowControl = *ptr_flowControl + 1;
 
-    for (int sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
+    for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         if (sensorReadings[sensorIdx].reading < OPERATIONAL_CURR_MIN)  //checks, if there is a sensor with current value below Operational_CURR_MIN
         {
             sensorIdx = NR_OF_SENSORS;
             retVal = E_ERROR;
 
             (void)printf("A sensor value is < OPERATIONAL_CURR_MIN.\n");
-        } else {
-            ;
+        } 
+        else if (sensorReadings[sensorIdx].reading > OPERATIONAL_CURR_MAX)
+        {
+            sensorIdx = NR_OF_SENSORS;
+            retVal = E_ERROR;
+
+            (void)printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");      
         }
     }
 
-    if (sensorReadings[0].reading > OPERATIONAL_CURR_MAX || sensorReadings[1].reading > OPERATIONAL_CURR_MAX || sensorReadings[2].reading > OPERATIONAL_CURR_MAX) {
-        (void)printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");
-        retVal = E_ERROR;
-    } else {
-        if ((uint8_t)abs(sensorReadings[2].reading - sensorReadings[1].reading) <= SENSOR_ACCURACY &&
-            (uint8_t)abs(sensorReadings[2].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
-            (uint8_t)abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY) {
+    if ((uint8_t)abs(sensorReadings[2].reading - sensorReadings[1].reading) <= SENSOR_ACCURACY &&
+        (uint8_t)abs(sensorReadings[2].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
+        (uint8_t)abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY) 
+    {
 #ifdef DEBUG
-            {
-                (void)printf("Sensor values in range and tolerance.\n");
-            }
-#endif
-            *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
-            retVal = E_OK;
-        } else {
-            (void)printf("Sensor values are not within SENSOR_ACCURACY.\n");
-            *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
-            //printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
-            retVal = E_NOT_OK;
+        {
+            (void)printf("Sensor values in range and tolerance.\n");
         }
+#endif
+        *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
+        retVal = E_OK;
+    } 
+    else 
+    {
+        (void)printf("Sensor values are not within SENSOR_ACCURACY.\n");
+        *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
+        //printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
+        retVal = E_NOT_OK;
     }
 
     return retVal;
