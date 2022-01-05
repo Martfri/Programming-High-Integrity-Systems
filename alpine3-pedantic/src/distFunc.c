@@ -26,7 +26,7 @@ static uint8_t computeDistance_A(uint8_t currentValue) {
     return distance;
 }
 
-float computeDistance_B(int32_t votedValue_B) {
+static float computeDistance_B(int32_t votedValue_B) {
     // attention rmoe: use constants, macros
     float yOffset = SensChar_Offset;  // 25m
 
@@ -61,7 +61,7 @@ static bool isDistanceSafe(uint8_t distance) {
  * @param retVal: enumerator of return Value
  * @return true if retVal ist E_NOT_OK or E_ERROR
  */
-bool isDistanceSafe_B(returnType_en retVal) {
+static bool isDistanceSafe_B(returnType_en retVal) {
     bool safe = false;
 
     if (retVal != E_NOT_OK && retVal != E_ERROR) {
