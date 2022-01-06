@@ -97,8 +97,7 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
         retVal = E_OK;
     } else {
         (void)printf("Sensor values are not within SENSOR_ACCURACY.\n");
-        *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
-        //printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
+        *votedValue_B = noValue;
         retVal = E_NOT_OK;
     }
 
