@@ -16,8 +16,8 @@
 #define IP "127.0.0.1"
 
 #ifdef DEBUG
-// #define CONVERT_TO_MS 1000
-#define CONVERT_TO_US 1000000
+#define CONVERT_TO_MS 1000
+//#define CONVERT_TO_US 1000000
 #endif
 
 static returnType_en init(int *socket_desc, pthread_t *cliThread, bool *rcvdExitCmd) {
@@ -89,7 +89,8 @@ int main() {
 #ifdef DEBUG
     (void)printf("Starting Program\n");
     double cpu_time_used = 0;
-    clock_t start = 0, end = 0;  //for the measurement of the time it takes to execute one while loop
+    struct timespec start;
+    struct timespec end;
 #endif
 
     if (E_OK != init(&socket_desc, &cliThread, &rcvdExitCmd)) {
@@ -113,7 +114,9 @@ int main() {
     */
     while (false == rcvdExitCmd) {  //lint !e731
 
-        start = clock();
+        clock_gettime(CLOCK_REALTIME, &start);
+
+                (void)printf("time start count is:%ld\n", start.tv_sec);
         enterSafeState = true;
         flowControl = 0;
         retVal = readSensors(socket_desc, sensorReadings);
@@ -141,9 +144,10 @@ int main() {
         (void)sleep(1);  // TODO check if it is needed
 
 #ifdef DEBUG
-        end = clock();
-        cpu_time_used = (((double)(end - start)) / CLOCKS_PER_SEC) * CONVERT_TO_US;  //measures the time for execuiting a single while loop
-        (void)printf("The iteration took %.1f microeconds to execute \n\n", cpu_time_used);
+        clock_gettime(CLOCK_REALTIME, &end);
+                (void)printf("time end count is:%ld\n", end.tv_sec);
+        cpu_time_used = ((double)(end.tv_sec - start.tv_sec));  //measures the time for execuiting a single while loop
+        (void)printf("The iteration took %.6f seconds to execute \n\n", cpu_time_used);
 #endif
     }
 
