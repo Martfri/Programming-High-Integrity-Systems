@@ -33,9 +33,9 @@ static bool allSensorsOperational(sensor_t const sensorReadings[]) {
  * @param bestValue: pointer to a variable to hold best value from all the readings
  * @return returnType_en E_OK in case the best value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, int32_t *ptr_flowControl) {
+returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, int32_t* ptr_flowControl) {
     returnType_en retVal = E_NOT_OK;
-    *ptr_flowControl = *ptr_flowControl +1;
+    *ptr_flowControl = *ptr_flowControl + 1;
 
     // for (int i = 0; i < 3; i++) printf("value %d: %d\n", i, sensorReadings[i].reading);
 
@@ -75,24 +75,19 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         if (sensorReadings[sensorIdx].reading < OPERATIONAL_CURR_MIN)  //checks, if there is a sensor with current value below Operational_CURR_MIN
         {
-            sensorIdx = NR_OF_SENSORS;
             retVal = E_ERROR;
-
             (void)printf("A sensor value is < OPERATIONAL_CURR_MIN.\n");
-        } 
-        else if (sensorReadings[sensorIdx].reading > OPERATIONAL_CURR_MAX)
-        {
-            sensorIdx = NR_OF_SENSORS;
+            break;
+        } else if (sensorReadings[sensorIdx].reading > OPERATIONAL_CURR_MAX) {
             retVal = E_ERROR;
-
-            (void)printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");      
+            (void)printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");
+            break;
         }
     }
 
     if ((uint8_t)abs(sensorReadings[2].reading - sensorReadings[1].reading) <= SENSOR_ACCURACY &&
         (uint8_t)abs(sensorReadings[2].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
-        (uint8_t)abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY) 
-    {
+        (uint8_t)abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY) {
 #ifdef DEBUG
         {
             (void)printf("Sensor values in range and tolerance.\n");
@@ -100,9 +95,7 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
 #endif
         *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
         retVal = E_OK;
-    } 
-    else 
-    {
+    } else {
         (void)printf("Sensor values are not within SENSOR_ACCURACY.\n");
         *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
         //printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
@@ -118,8 +111,10 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
  * @param
  * @return
  */
-returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState, int32_t *ptr_flowControl) {
+returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState, int32_t* ptr_flowControl) {
     *ptr_flowControl = *ptr_flowControl + 1;
-    *enterSafeState = !distanceIsSafe_A | !distanceIsSafe_B;
+    /* Warning 514: Unusual use of a Boolean expression: for boolean variables "||" must be used instead of bitwise operator "|" */
+    // *enterSafeState = !distanceIsSafe_A | !distanceIsSafe_B;
+    *enterSafeState = !distanceIsSafe_A || !distanceIsSafe_B;
     return E_OK;
 }

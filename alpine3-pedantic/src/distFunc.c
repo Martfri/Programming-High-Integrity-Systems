@@ -80,11 +80,10 @@ static bool isDistanceSafe_B(returnType_en retVal) {
  * @param distance: pointer to a variable to hold the converted distance value
  * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceIsSafe_A, int32_t *ptr_flowControl) {
+returnType_en evaluateDistance_BlockA(sensor_t const sensorReadings[], bool* distanceIsSafe_A, int32_t* ptr_flowControl) {
     uint8_t votedValue = 0;
     uint8_t distance = 0;
     returnType_en retVal;
-    *ptr_flowControl = *ptr_flowControl + 1;
 
     retVal = runVoter_A(sensorReadings, &votedValue, ptr_flowControl);
 
@@ -96,7 +95,8 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
         retVal = E_OK;
 
 #ifdef DEBUG
-        (void)printf("BlockA Computed distance: %.2f m\n", ((float)distance) / 10.0);
+        (void)printf("Voted Current A: %i (10*mA)\n", votedValue);
+        (void)printf("Computed Distance A: %.2f m\n", ((float)distance) / 10.0);
         (void)printf("Distance is Safe A: %s\n\n", *distanceIsSafe_A ? "TRUE" : "FALSE");
 #endif
 
@@ -105,6 +105,7 @@ returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceI
         retVal = E_NOT_OK;
     }
 
+    *ptr_flowControl = *ptr_flowControl + 1;
     return retVal;
 }
 
@@ -120,24 +121,25 @@ returnType_en evaluateDistance_BlockB(sensor_t const sensorReadings[], bool* dis
     int32_t votedValue_B = 0;
     returnType_en retVal;
 
-    *ptr_flowControl = *ptr_flowControl + 1;
-
     retVal = runVoter_B(sensorReadings, &votedValue_B, ptr_flowControl);
 
-#ifdef DEBUG
-    (void)printf("B_Voted Current is: %i (10*mA)\n", votedValue_B);
-#endif
-
-#ifdef DEBUG
     float distance_B = computeDistance_B(votedValue_B);
-    (void)printf("BlockB Computed distance: %.2f m\n", (float)(distance_B / Sens_Scaler));
-#endif
+
+    /*TODO distance_B has the computed distance but is never used.
+    isDistanceSafe_B uses the retVal (OK - 0 or NOT_OK - 1) from the runVoter_B function.
+    I think distance B shouldnt be ignored
+    */
+    (void)distance_B;  //TODO delete this line after fixing the logic
 
     *distanceIsSafe_B = isDistanceSafe_B(retVal);
 
 #ifdef DEBUG
-    (void)printf("Distance is Safe: %s\n\n", *distanceIsSafe_B ? "TRUE" : "FALSE");
+    (void)printf("Voted Current B: %i (10*mA)\n", votedValue_B);
+    (void)printf("Block Computed Distance B: %.2f m\n", (float)(distance_B / Sens_Scaler));
+    (void)printf("Distance is Safe B: %s\n\n", *distanceIsSafe_B ? "TRUE" : "FALSE");
 #endif
+
+    *ptr_flowControl = *ptr_flowControl + 1;
 
     return retVal;
 }

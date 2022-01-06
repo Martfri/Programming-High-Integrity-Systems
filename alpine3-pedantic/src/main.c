@@ -1,22 +1,23 @@
 /* Linter error description: https://www.kessler.de/prd/gimpel/pclint-meldungen.htm */
 #include <arpa/inet.h>
+#include <time.h>
 
 #include "cli.h"
 #include "distFunc.h"
 
 //Warning 537: Repeated include file 'sensors.h - Since stdLib has include guards, this is not a problem
 #include "sensors.h"  //lint !e537
-
 //Warning 537: Repeated include file 'stdLib.h - Since stdLib has include guards, this is not a problem
 #include "stdLib.h"  //lint !e537
 #include "voters.h"
-#include "time.h"
 
 #define PORT 8080
 #define IP "127.0.0.1"
 
-#define CONVERT_TO_MS 1000
+#ifdef DEBUG
+// #define CONVERT_TO_MS 1000
 #define CONVERT_TO_US 1000000
+#endif
 
 int main() {
     returnType_en retVal;
@@ -27,12 +28,10 @@ int main() {
     struct sockaddr_in server_addr;
     int32_t flowControl = 0;
 
-    clock_t start, end; //for the measurement of the time it takes to execute one while loop
-    double cpu_time_used;
-
 #ifdef DEBUG
+    clock_t start = 0, end = 0;  //for the measurement of the time it takes to execute one while loop
+    double cpu_time_used;
     (void)printf("Starting Program\n");
-
 #endif
 
     // Create UDP socket:
@@ -77,22 +76,28 @@ int main() {
       cast to some type, this message is not given.
     */
     while (false == rcvdExitCmd) {  //lint !e731
-        start = clock();
-
         flowControl = 0;
         retVal = readSensors(socket_desc, sensorReadings);
 
-        retVal = evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A, &flowControl);
+        /* It is advised not to perform bitwise operations on enums because it is not possible to define if an enum is a signed or unsigned integer.
+        In this case the enum is a signed integer, however this case is used to check if all the function returned E_OK which translates to 0b000.
+        The actual signedness of the variable is not relevant */
 
-        retVal |= evaluateDistance_BlockB(sensorReadings, &distanceIsSafe_A, &flowControl);  //lint !e655
+        retVal |= evaluateDistance_BlockA(sensorReadings, &distanceIsSafe_A, &flowControl);  //lint !e655
 
-        retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState, &flowControl);
+        retVal |= evaluateDistance_BlockB(sensorReadings, &distanceIsSafe_B, &flowControl);  //lint !e655
+
+        retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState, &flowControl);  //lint !e655
 #ifdef DEBUG
         (void)printf("flowControl count is:%i\n", flowControl);
 #endif
 
-        if (E_OK == retVal && flowControl == 5) {
-            enterSafeState = false;
+        // if (E_OK == retVal && flowControl == 5) {
+        //     enterSafeState = false;
+        // }
+
+        if (E_OK != retVal && flowControl != 5) {
+            enterSafeState = true;
         }
 
         /* Display System Decision */
@@ -100,13 +105,11 @@ int main() {
         (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
         (void)sleep(1);  // TODO check if it is needed
 
+#ifdef DEBUG
         end = clock();
-        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC * CONVERT_TO_US; //measures the time for execuiting a single while loop
-
-//#ifdef DEBUG
+        cpu_time_used = (((double)(end - start)) / CLOCKS_PER_SEC) * CONVERT_TO_US;  //measures the time for execuiting a single while loop
         (void)printf("The iteration took %.1f microeconds to execute \n\n", cpu_time_used);
-//#endif
-
+#endif
     }
 
     /* Wait For CLI thread to terminate */

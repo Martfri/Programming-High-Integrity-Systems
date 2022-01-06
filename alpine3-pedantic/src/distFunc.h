@@ -9,7 +9,7 @@
 
 #include "sensors.h"
 
-#define Sens_Scaler 10.0f      // Scales the sensor values
+#define Sens_Scaler 10.0f  // Scales the sensor values
 
 /**
  * @brief runs the implementation A of the current to distance conversion algorithm
@@ -18,7 +18,7 @@
  * @param distanceIsSafe_A: pointer to a variable to signal if there is a threat nearby
  * @return returnType_en E_OK in case the distance value was computed sucessfuly, else E_NOT_OK
  */
-returnType_en evaluateDistance_BlockA(sensor_t sensorReadings[], bool* distanceIsSafe_A, int32_t* ptr_flowControl);
+returnType_en evaluateDistance_BlockA(sensor_t const sensorReadings[], bool* distanceIsSafe_A, int32_t* ptr_flowControl);
 
 /**
  * @brief
