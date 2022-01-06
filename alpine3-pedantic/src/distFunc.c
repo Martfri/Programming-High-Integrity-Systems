@@ -55,7 +55,7 @@ static bool isDistanceSafe(uint8_t distance) {
 /**
  * @brief Checks the retval value and returns the state value
  *
- * @param retVal: enumerator of return Value
+ * @param distance_B: float of distance value
  * @return true if retVal ist E_NOT_OK or E_ERROR
  */
 static bool isDistanceSafe_B(float distance_B) {
