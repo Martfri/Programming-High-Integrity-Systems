@@ -1,4 +1,5 @@
 /* Linter error description: https://www.kessler.de/prd/gimpel/pclint-meldungen.htm */
+// TODO REVIEW FUNCTION DESCRIPTIONS
 #include <arpa/inet.h>
 #include <time.h>
 
