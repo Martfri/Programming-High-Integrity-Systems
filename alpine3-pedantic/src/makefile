@@ -36,7 +36,7 @@ TESTDIR = test/
 
 .PHONY: default all clean lint test
 
-default: build
+default: lint build
 all: lint test build
 build: $(TARGET)
 
