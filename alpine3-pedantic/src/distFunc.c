@@ -58,15 +58,14 @@ static bool isDistanceSafe(uint8_t distance) {
  * @param retVal: enumerator of return Value
  * @return true if retVal ist E_NOT_OK or E_ERROR
  */
-static bool isDistanceSafe_B(returnType_en retVal) {
+static bool isDistanceSafe_B(float distance_B) {
     bool safe = false;
 
-    if (retVal != E_NOT_OK && retVal != E_ERROR) {
+    if (distance_B > MAX_UNSAFE_DISTANCE) {
         safe = true;
     } else {
         safe = false;
     }
-
     return safe;
 }
 
@@ -122,13 +121,7 @@ returnType_en evaluateDistance_BlockB(sensor_t const sensorReadings[], bool* dis
 
     float distance_B = computeDistance_B(votedValue_B);
 
-    /*TODO distance_B has the computed distance but is never used.
-    isDistanceSafe_B uses the retVal (OK - 0 or NOT_OK - 1) from the runVoter_B function.
-    I think distance B shouldnt be ignored
-    */
-    (void)distance_B;  //TODO delete this line after fixing the logic
-
-    *distanceIsSafe_B = isDistanceSafe_B(retVal);
+    *distanceIsSafe_B = isDistanceSafe_B(distance_B);
 
 #ifdef DEBUG
     (void)printf("Voted Current B: %i (10*mA)\n", votedValue_B);
