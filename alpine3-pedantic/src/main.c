@@ -113,6 +113,7 @@ int main() {
     */
     while (false == rcvdExitCmd) {  //lint !e731
         flowControl = 0;
+        start = clock();
         retVal = readSensors(socket_desc, sensorReadings);
 
         /* It is advised not to perform bitwise operations on enums because it is not possible to define if an enum is a signed or unsigned integer.
