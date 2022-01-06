@@ -112,6 +112,7 @@ int main() {
       cast to some type, this message is not given.
     */
     while (false == rcvdExitCmd) {  //lint !e731
+        enterSafeState = true;
         flowControl = 0;
         retVal = readSensors(socket_desc, sensorReadings);
 
@@ -129,7 +130,7 @@ int main() {
         (void)printf("flowControl count is:%i\n", flowControl);
 #endif
 
-        if (E_OK != retVal || flowControl != 1) {
+        if (E_OK != retVal || flowControl != 5) {
             enterSafeState = true;
         }
 
