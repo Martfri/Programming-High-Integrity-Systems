@@ -19,27 +19,18 @@
 #define CONVERT_TO_US 1000000
 #endif
 
-int main() {
+static returnType_en init(int *socket_desc, pthread_t *cliThread, bool *rcvdExitCmd) {
     returnType_en retVal;
-    pthread_t cliThread;
-    sensor_t sensorReadings[NR_OF_SENSORS];  // holds the value of the sensor readings * 10
-    bool enterSafeState = true, distanceIsSafe_A = false, distanceIsSafe_B = false, rcvdExitCmd = false;
-    int socket_desc;
     struct sockaddr_in server_addr;
-    int32_t flowControl = 0;
-
-#ifdef DEBUG
-    clock_t start = 0, end = 0;  //for the measurement of the time it takes to execute one while loop
-    double cpu_time_used;
-    (void)printf("Starting Program\n");
-#endif
 
     // Create UDP socket:
-    socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    *socket_desc = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
-    if (socket_desc < 0) {
+    if (*socket_desc < 0) {
         (void)printf("ERROR: Failed to create socket\n");
-        return -1;
+        retVal = E_NOT_OK;
+    } else {
+        retVal = E_OK;
     }
 
     // Set port and IP:
@@ -50,14 +41,58 @@ int main() {
     // Bind to the set port and IP:
     /* sockaddr is a generic descriptor for any kind of socket operation, 
     whereas sockaddr_in is a struct specific to IP-based communication.  */
-    if (bind(socket_desc, (struct sockaddr *)&server_addr, (unsigned int)sizeof(server_addr)) < 0) {  //lint !e740
+    if (bind(*socket_desc, (struct sockaddr *)&server_addr, (unsigned int)sizeof(server_addr)) < 0) {  //lint !e740
         (void)printf("ERROR: Couldn't bind to the port\n");
-        return -1;
+        retVal |= E_NOT_OK;  //lint !e655
     }
 
     /* Start keyboard listener thread */
-    if (0 != pthread_create(&cliThread, (pthread_attr_t *)NULL, readCLI, (void *)&rcvdExitCmd)) {
+    if (0 != pthread_create(cliThread, (pthread_attr_t *)NULL, readCLI, (void *)rcvdExitCmd)) {
         (void)printf("ERROR: Failed to create CLI thread, terminating program\n");
+        retVal |= E_NOT_OK;  //lint !e655
+    }
+
+    return retVal;
+}
+
+static returnType_en terminate(int const *socket_desc, pthread_t const *cliThread) {
+    returnType_en retVal;
+
+    /* Wait For CLI thread to terminate */
+    if (0 != pthread_join(*cliThread, NULL)) {
+        (void)printf("ERROR: Failed to wait for CLI thread to terminate\n");
+        retVal = E_NOT_OK;
+    } else {
+        retVal = E_OK;
+    }
+
+    // Close the socket:
+    if (0 != close(*socket_desc)) {
+        (void)printf("ERROR: Failed to close socket\n");
+        retVal |= E_NOT_OK;  //lint !e655
+    }
+
+    (void)printf("Terminating program\n");
+
+    return retVal;
+}
+
+int main() {
+    returnType_en retVal;
+    pthread_t cliThread;
+    sensor_t sensorReadings[NR_OF_SENSORS];  // holds the value of the sensor readings * 10
+    bool enterSafeState = true, distanceIsSafe_A = false, distanceIsSafe_B = false, rcvdExitCmd = false;
+    int socket_desc;
+    int32_t flowControl = 0;
+
+#ifdef DEBUG
+    (void)printf("Starting Program\n");
+    double cpu_time_used = 0;
+    clock_t start = 0, end = 0;  //for the measurement of the time it takes to execute one while loop
+#endif
+
+    if (E_OK != init(&socket_desc, &cliThread, &rcvdExitCmd)) {
+        (void)printf("Failed to Init\n");
         exit(EXIT_FAILURE);
     }
 
@@ -111,17 +146,10 @@ int main() {
         (void)printf("The iteration took %.1f microeconds to execute \n\n", cpu_time_used);
 #endif
     }
-
-    /* Wait For CLI thread to terminate */
-    if (0 != pthread_join(cliThread, NULL)) {
-        (void)printf("ERROR: Failed to wait for CLI thread to terminate\n");
+    if (E_OK != terminate(&socket_desc, &cliThread)) {
+        (void)printf("Program Terminated Abruptly\n");
+        exit(EXIT_FAILURE);
     }
 
-    // Close the socket:
-    if (0 != close(socket_desc)) {
-        (void)printf("ERROR: Failed to close socket\n");
-    }
-
-    (void)printf("Terminating program\n");
     return 0;
 }
