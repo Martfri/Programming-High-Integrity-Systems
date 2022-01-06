@@ -35,7 +35,6 @@ static bool allSensorsOperational(sensor_t const sensorReadings[]) {
  */
 returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, int32_t* ptr_flowControl) {
     returnType_en retVal = E_NOT_OK;
-    *ptr_flowControl = *ptr_flowControl + 1;
 
     // for (int i = 0; i < 3; i++) printf("value %d: %d\n", i, sensorReadings[i].reading);
 
@@ -57,6 +56,7 @@ returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, in
         retVal = E_NOT_OK;
     }
 
+    *ptr_flowControl = *ptr_flowControl + 1;
     return retVal;
 }
 
@@ -70,7 +70,6 @@ returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, in
 
 returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B, int32_t* ptr_flowControl) {
     returnType_en retVal = E_NOT_OK;
-    *ptr_flowControl = *ptr_flowControl + 1;
 
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         if (sensorReadings[sensorIdx].reading < OPERATIONAL_CURR_MIN)  //checks, if there is a sensor with current value below Operational_CURR_MIN
@@ -101,6 +100,7 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
         retVal = E_NOT_OK;
     }
 
+    *ptr_flowControl = *ptr_flowControl + 1;
     return retVal;
 }
 
@@ -111,9 +111,10 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
  * @return
  */
 returnType_en runStage2Voter(bool distanceIsSafe_A, bool distanceIsSafe_B, bool* enterSafeState, int32_t* ptr_flowControl) {
-    *ptr_flowControl = *ptr_flowControl + 1;
     /* Warning 514: Unusual use of a Boolean expression: for boolean variables "||" must be used instead of bitwise operator "|" */
     // *enterSafeState = !distanceIsSafe_A | !distanceIsSafe_B;
     *enterSafeState = !distanceIsSafe_A || !distanceIsSafe_B;
+
+    *ptr_flowControl = *ptr_flowControl + 1;
     return E_OK;
 }
