@@ -96,7 +96,7 @@ returnType_en evaluateDistance_BlockA(sensor_t const sensorReadings[], bool* dis
 
 #ifdef DEBUG
         (void)printf("Voted Current A: %i (10*mA)\n", votedValue);
-        (void)printf("Computed Distance A: %.2f m\n", ((float)distance) / 10.0);
+        (void)printf("Computed Distance A: %.2f m\n", ((float)distance) / SENSOR_SCALER);
         (void)printf("Distance is Safe A: %s\n\n", *distanceIsSafe_A ? "TRUE" : "FALSE");
 #endif
 
@@ -135,7 +135,7 @@ returnType_en evaluateDistance_BlockB(sensor_t const sensorReadings[], bool* dis
 
 #ifdef DEBUG
     (void)printf("Voted Current B: %i (10*mA)\n", votedValue_B);
-    (void)printf("Block Computed Distance B: %.2f m\n", (float)(distance_B / Sens_Scaler));
+    (void)printf("Block Computed Distance B: %.2f m\n", (float)(distance_B / SENSOR_SCALER));
     (void)printf("Distance is Safe B: %s\n\n", *distanceIsSafe_B ? "TRUE" : "FALSE");
 #endif
 

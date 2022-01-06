@@ -9,7 +9,7 @@
 
 #include "sensors.h"
 
-#define Sens_Scaler 10.0f  // Scales the sensor values
+#define SENSOR_SCALER 10.0f  // Scales the sensor values
 
 /**
  * @brief runs the implementation A of the current to distance conversion algorithm
