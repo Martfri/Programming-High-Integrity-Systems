@@ -39,18 +39,28 @@ TESTDIR = test/
 default: lint build
 all: lint test build
 build: $(TARGET)
+	@echo "------------------------------------------------------------------"
+	@echo "                  Build Finished Successfully..."
+	@echo "------------------------------------------------------------------"
 
 OBJ=$(patsubst %.c, %.o, $(wildcard *.c))
 TESTOBJ=$(patsubst %.c, $(TESTDIR)%.o, $(wildcard *.c))
 HDR=$(wildcard *.h)
 SRC=$(wildcard *.c)
 
-%.o: %.c $(HDR)
+compile_print:
+	@echo "------------------------------------------------------------------"
+	@echo "                            Compiling..."
+	@echo "------------------------------------------------------------------"
+%.o:  %.c $(HDR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PRECIOUS: $(TARGET) $(OBJ)
 
-$(TARGET): $(OBJ)
+$(TARGET): compile_print $(OBJ)
+	@echo "------------------------------------------------------------------"
+	@echo "                            Linking..."
+	@echo "------------------------------------------------------------------"
 	$(CC)  $(OBJ) $(LDFLAGS) -o $@
 	-rm -f *.o
 
@@ -64,14 +74,24 @@ $(TESTDIR)$(TARGET_TEST): $(TESTOBJ)
 	$(CC)  $(TESTOBJ) $(LDFLAGS) -o $@
 	-rm -f $(TESTDIR)*.o
 
-test: $(TESTDIR)$(TARGET_TEST)
+test: 
+	@echo "------------------------------------------------------------------"
+	@echo "                            Testing..."
+	@echo "------------------------------------------------------------------"
+	$(TESTDIR)$(TARGET_TEST)
 	cd $(TESTDIR) && make all
 	-rm -f $(TARGET_TEST)
 
 
 clean:
+	@echo "------------------------------------------------------------------"
+	@echo "                            Cleaning..."
+	@echo "------------------------------------------------------------------"
 	-rm -f $(TARGET) $(LINTOUT) $(CDEFINES)
 
 lint:
+	@echo "------------------------------------------------------------------"
+	@echo "                            Linting..."
+	@echo "------------------------------------------------------------------"
 	$(shell echo "" | gcc -dM -E - > $(CDEFINES))
 	$(LINT) $(LINTFLAGS) $(SRC) > $(LINTOUT)
