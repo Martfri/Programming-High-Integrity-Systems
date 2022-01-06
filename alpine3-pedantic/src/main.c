@@ -123,20 +123,16 @@ int main() {
         retVal |= evaluateDistance_BlockB(sensorReadings, &distanceIsSafe_B, &flowControl);  //lint !e655
 
         retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState, &flowControl);  //lint !e655
+
 #ifdef DEBUG
         (void)printf("flowControl count is:%i\n", flowControl);
 #endif
-
-        // if (E_OK == retVal && flowControl == 5) {
-        //     enterSafeState = false;
-        // }
 
         if (E_OK != retVal && flowControl != 5) {
             enterSafeState = true;
         }
 
         /* Display System Decision */
-        // attention: use void in front of the
         (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
         (void)sleep(1);  // TODO check if it is needed
 
@@ -146,6 +142,7 @@ int main() {
         (void)printf("The iteration took %.1f microeconds to execute \n\n", cpu_time_used);
 #endif
     }
+
     if (E_OK != terminate(&socket_desc, &cliThread)) {
         (void)printf("Program Terminated Abruptly\n");
         exit(EXIT_FAILURE);
