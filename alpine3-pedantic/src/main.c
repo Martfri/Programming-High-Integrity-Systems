@@ -112,10 +112,11 @@ int main() {
       cast to some type, this message is not given.
     */
     while (false == rcvdExitCmd) {  //lint !e731
+        /* force merge conflict
         flowControl = 0;
         start = clock();
         retVal = readSensors(socket_desc, sensorReadings);
-
+*/
         /* It is advised not to perform bitwise operations on enums because it is not possible to define if an enum is a signed or unsigned integer.
         In this case the enum is a signed integer, however this case is used to check if all the function returned E_OK which translates to 0b000.
         The actual signedness of the variable is not relevant */
