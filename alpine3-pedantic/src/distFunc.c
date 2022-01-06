@@ -13,9 +13,6 @@
  * @return uint8_t computed distance in (10*m)
  */
 static uint8_t computeDistance_A(uint8_t currentValue) {
-#ifdef DEBUG
-    (void)printf("Voted Current A: %d (10*mA)\n", currentValue);
-#endif
 
     /* 10cm precision loss. Ex: 0.38m is truncated to 0.30m*/
     uint8_t distance = (uint8_t)SENSOR_SCALED_TRANSFER_FUNC(currentValue);
