@@ -7,7 +7,7 @@
 #ifndef VOTERS_H
 #define VOTERS_H
 
-#define noValue 0
+#define noValue 200
 
 //Warning 537: Repeated include file 'sensors.h - Since stdLib has include guards, this is not a problem
 #include "sensors.h"  //lint !e537
