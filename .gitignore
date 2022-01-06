@@ -14,3 +14,5 @@ alpine3-pedantic/src/phis
 alpine3-pedantic/src/*.o
 alpine3-pedantic/src/results_linter.txt
 alpine3-pedantic/src/gcc-defines.h
+alpine3-pedantic/src/test/phis_test
+alpine3-pedantic/src/test/phis.so
