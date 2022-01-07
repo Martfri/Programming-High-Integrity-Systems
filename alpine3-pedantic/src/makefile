@@ -74,11 +74,10 @@ $(TESTDIR)$(TARGET_TEST): $(TESTOBJ)
 	$(CC)  $(TESTOBJ) $(LDFLAGS) -o $@
 	-rm -f $(TESTDIR)*.o
 
-test: 
+test:
 	@echo "------------------------------------------------------------------"
 	@echo "                            Testing..."
 	@echo "------------------------------------------------------------------"
-	$(TESTDIR)$(TARGET_TEST)
 	cd $(TESTDIR) && make all
 	-rm -f $(TARGET_TEST)
 
