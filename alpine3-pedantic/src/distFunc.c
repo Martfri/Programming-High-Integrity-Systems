@@ -13,7 +13,6 @@
  * @return uint8_t computed distance in (10*m)
  */
 static uint8_t computeDistance_A(uint8_t currentValue) {
-
     /* 10cm precision loss. Ex: 0.38m is truncated to 0.30m*/
     uint8_t distance = (uint8_t)SENSOR_SCALED_TRANSFER_FUNC(currentValue);
 
@@ -40,7 +39,7 @@ static float computeDistance_B(int32_t votedValue_B) {
  * @param distance: value of the distance in (10*m)
  * @return true if
  */
-static bool isDistanceSafe(uint8_t distance) {
+static bool isDistanceSafe_A(uint8_t distance) {
     bool safe = false;
 
     if (distance < MIN_SAFE_DISTANCE) {
@@ -86,7 +85,7 @@ returnType_en evaluateDistance_BlockA(sensor_t const sensorReadings[], bool* dis
     if (E_OK == retVal) {
         /*TODO evaluate computed value*/
         distance = computeDistance_A(votedValue);
-        *distanceIsSafe_A = isDistanceSafe(distance);
+        *distanceIsSafe_A = isDistanceSafe_A(distance);
 
         retVal = E_OK;
 
