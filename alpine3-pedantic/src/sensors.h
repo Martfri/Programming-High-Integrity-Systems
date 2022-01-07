@@ -58,6 +58,8 @@ returnType_en readSensors(int sockfd, sensor_t sensorReadings[]);
 //  * @param sensorMsg: Array of sensor values
 //  * @param sensorReadings: Array of sensor readings
 //  */
-// static void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]);
+
+//it needs to be here for the shared object to do testing. 
+static void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]);
 
 #endif
