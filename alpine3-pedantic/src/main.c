@@ -82,14 +82,14 @@ static void movingAverageFilter(bool* enterSafeState, bool* old_enterSafeState){
     float h[2] = {0.5, 0.5}; //filter coefficients
     bool new_enterSafeState = *enterSafeState;
 
-    x[0] = *old_enterSafeState;
-    x[1] = new_enterSafeState;
+    x[0] = *old_enterSafeState; 
+    x[1] = new_enterSafeState; 
 
     if((h[1]*x[0]+h[0]*x[1]) < 1.0f){
-        *enterSafeState = false;
+        *enterSafeState = *old_enterSafeState; 
     }
     else{
-    *enterSafeState = true; 
+    *enterSafeState = new_enterSafeState; 
     }
 
 #ifdef DEBUG
@@ -174,7 +174,7 @@ int main() {
 
         /* Display System Decision */
         (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
-        (void)sleep(1);  // TODO check if it is needed
+        //(void)sleep(1);  // TODO check if it is needed
 
 #ifdef DEBUG
         clock_gettime(CLOCK_REALTIME, &end);
