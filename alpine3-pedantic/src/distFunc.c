@@ -61,7 +61,7 @@ static bool isDistanceSafe(uint8_t distance) {
 static bool isDistanceSafe_B(float distance_B) {
     bool safe = false;
 
-    if (MAX_UNSAFE_DISTANCE < distance_B  &&  MAX_OPERATIONAL_DISTANCE > distance_B  ) {
+    if (MAX_UNSAFE_DISTANCE <= distance_B  &&  MAX_OPERATIONAL_DISTANCE >= distance_B  ) {
         safe = true;
     } else {
         safe = false;
