@@ -89,7 +89,7 @@ static void movingAverageFilter(bool* enterSafeState, bool* old_enterSafeState){
         *enterSafeState = *old_enterSafeState; 
     }
     else{
-    *enterSafeState = new_enterSafeState; 
+        *enterSafeState = new_enterSafeState; 
     }
 
 #ifdef DEBUG
@@ -144,7 +144,7 @@ int main() {
     while (false == rcvdExitCmd) {  //lint !e731
 
 #ifdef DEBUG
-        clock_gettime(CLOCK_REALTIME, &start);
+        (void) clock_gettime(CLOCK_REALTIME, &start);
         (void)printf("time start count is:%ld\n", start.tv_sec);
 #endif
 
@@ -177,7 +177,7 @@ int main() {
         //(void)sleep(1);  // TODO check if it is needed
 
 #ifdef DEBUG
-        clock_gettime(CLOCK_REALTIME, &end);
+        (void) clock_gettime(CLOCK_REALTIME, &end);
         // (void)printf("time end count is:%ld\n", end.tv_sec);
         cpu_time_sec = ((double)(end.tv_sec - start.tv_sec));  
         cpu_time_ns = ((double)(end.tv_nsec - start.tv_nsec)) / BILLION;  
