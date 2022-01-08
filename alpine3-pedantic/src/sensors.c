@@ -26,7 +26,13 @@ static void printSensorReadings(sensor_t const sensorReadings[]) {
  * @param sensorMsg: Array of sensor values
  * @param sensorReadings: Array of sensor readings
  */
-static void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]) {
+
+#ifdef TEST
+        void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]) {
+#else
+        static void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]) {
+#endif
+
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         uint8_t reading = sensorMsg[sensorIdx];
 
