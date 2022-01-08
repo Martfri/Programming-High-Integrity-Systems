@@ -99,7 +99,7 @@ returnType_en evaluateDistance_BlockA(sensor_t const sensorReadings[], bool* dis
     } else {
 #ifdef DEBUG
         (void)printf("Sensors did not provide reliable readings\n\n");
-#ifdef
+#endif
         retVal = E_NOT_OK;
         *distanceIsSafe_A = false;
     }
