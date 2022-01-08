@@ -26,12 +26,13 @@ def runVoterA(voterLib, sensor1, sensor2, sensor3) -> bool:
     sensorMsg = Uint8Array4(sensor1, sensor2, sensor3, 0)
     sensorReadings = SensorArray3()
     voterResult = c_bool()
+    flowcontrol = c_uint32(0)
     voterLib.evaluateSensors(sensorMsg, sensorReadings)
-    voterLib.evaluateDistance_BlockA(sensorReadings, pointer(voterResult))
+    voterLib.evaluateDistance_BlockA(sensorReadings, pointer(voterResult), pointer(flowcontrol))
     if voterResult:
-        return True
-    else:
         return False
+    else:
+        return True
 
 def testVoterA(voterLib, logFile) -> bool:
     sensor1 = RandomNumberGenerator.RandNum()[0]
@@ -43,7 +44,7 @@ def testVoterA(voterLib, logFile) -> bool:
     if voterResult == expectedResult:
         return True
     else:
-        logFile.write(f"Sensor values: ({sensor1}, {sensor1}, {sensor1}), Voter A returned {voterResult}, expected {expectedResult}\n")
+        logFile.write(f"Sensor values: ({sensor1}, {sensor2}, {sensor3}), Voter A returned {voterResult}, expected {expectedResult}\n")
         return False
 
 def runVoterB(voterLib, sensor1, sensor2, sensor3) -> bool:
@@ -54,9 +55,9 @@ def runVoterB(voterLib, sensor1, sensor2, sensor3) -> bool:
     voterLib.evaluateSensors(sensorMsg, sensorReadings)
     voterLib.evaluateDistance_BlockB(sensorReadings, pointer(voterResult), pointer(flowcontrol))
     if voterResult:
-        return True
-    else:
         return False
+    else:
+        return True
 
 def testVoterB(voterLib, logFile) -> bool:
     sensor1 = RandomNumberGenerator.RandNum()[0]
@@ -68,13 +69,14 @@ def testVoterB(voterLib, logFile) -> bool:
     if voterResult == expectedResult:
         return True
     else:
-        logFile.write(f"Sensor values: ({sensor1}, {sensor1}, {sensor1}), Voter B returned {voterResult}, expected {expectedResult}\n")
+        logFile.write(f"Sensor values: ({sensor1}, {sensor2}, {sensor3}), Voter B returned {voterResult}, expected {expectedResult}\n")
         return False
 
 def testVoter3(voterLib, logFile, input1, input2) -> bool:
     enterSafeState = c_bool(True)
+    flowcontrol = c_uint32(0)
     expectedResult = Voter3.voter3(input1, input2)
-    voterResult = voterLib.runStage2Voter(input1, input2, pointer(enterSafeState))
+    voterResult = voterLib.runStage2Voter(input1, input2, pointer(enterSafeState), pointer(flowcontrol))
     print(f"Input for voter3: {input1}, {input2}")
     if bool(enterSafeState) == expectedResult:
         print("Outcome of Voter 3 matched expected result")
@@ -110,7 +112,7 @@ def testIntegration(voterLib, logFile, process) -> bool:
     if ImplementationResult == expectedResult:
         return True
     else:
-        logFile.write(f"Sensor values: ({sensor1}, {sensor1}, {sensor1}), Implementation returned {ImplementationResult}, expected {expectedResult}\n")
+        logFile.write(f"Sensor values: ({sensor1}, {sensor2}, {sensor3}), Implementation returned {ImplementationResult}, expected {expectedResult}\n")
         return False
 
 def main() -> int:
@@ -125,10 +127,12 @@ def main() -> int:
     voterLib = CDLL(voterLibFile)
     logFile = open("../results_test.txt", 'w')
 
+    TEST_ITERATION = 200
+
     # unit test voter A
     print("Test voter A:")
     logFile.write("Failed Tests for voter A:\n")
-    for _ in range(200):
+    for _ in range(TEST_ITERATION):
         if testVoterA(voterLib, logFile):
             numTestsVoterA = numTestsVoterA + 1
         else:
@@ -138,7 +142,7 @@ def main() -> int:
     # unit test voter B
     print("Test voter B:")
     logFile.write("Failed Tests for voter B:\n")
-    for _ in range(200):
+    for _ in range(TEST_ITERATION):
         if testVoterB(voterLib, logFile):
             numTestsVoterB = numTestsVoterB + 1
         else:
@@ -196,7 +200,7 @@ def main() -> int:
 
     # prints for Voter 3
     print(f"Test Voter 3: {numFailedTestsVoter3} from {numTestsVoter3} tests failed")
-    logFile.write(f"Test Voter B: {numFailedTestsVoter3} from {numTestsVoter3} tests failed\n\n")
+    logFile.write(f"Test Voter 3: {numFailedTestsVoter3} from {numTestsVoter3} tests failed\n\n")
 
     # prints for System / Integration Test
     if (numFailedTestsIntegration == 0):
