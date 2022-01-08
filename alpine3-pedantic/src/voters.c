@@ -92,9 +92,18 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
             (void)printf("Sensor values in range and tolerance.\n");
         }
 #endif
+        if(sensorReadings[0].reading <= OPERATIONAL_CURR_SAFE && sensorReadings[0].reading <= OPERATIONAL_CURR_SAFE && sensorReadings[0].reading <= OPERATIONAL_CURR_SAFE)
+        {
         *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
         retVal = E_OK;
-    } else {
+        }
+        else{
+            *votedValue_B = noValue;
+        }
+    } 
+    
+    else 
+    {
         (void)printf("Sensor values are not within SENSOR_ACCURACY.\n");
         *votedValue_B = noValue;
         retVal = E_NOT_OK;
