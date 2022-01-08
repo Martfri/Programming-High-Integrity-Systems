@@ -174,6 +174,7 @@ int main() {
 
         /* Display System Decision */
         (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
+        fflush(stdout);
         //(void)sleep(1);  // TODO check if it is needed
 
 #ifdef DEBUG
