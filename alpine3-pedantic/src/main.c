@@ -144,7 +144,7 @@ int main() {
     while (false == rcvdExitCmd) {  //lint !e731
 
 #ifdef DEBUG
-        (void) clock_gettime(CLOCK_REALTIME, &start);
+        (void)clock_gettime(CLOCK_REALTIME, &start);
         (void)printf("time start count is:%ld\n", start.tv_sec);
 #endif
 
@@ -174,11 +174,11 @@ int main() {
 
         /* Display System Decision */
         (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
-        fflush(stdout);
+        (void)fflush(stdout);
         //(void)sleep(1);  // TODO check if it is needed
 
 #ifdef DEBUG
-        (void) clock_gettime(CLOCK_REALTIME, &end);
+        (void)clock_gettime(CLOCK_REALTIME, &end);
         // (void)printf("time end count is:%ld\n", end.tv_sec);
         cpu_time_sec = ((double)(end.tv_sec - start.tv_sec));
         cpu_time_ns = ((double)(end.tv_nsec - start.tv_nsec)) / BILLION;
