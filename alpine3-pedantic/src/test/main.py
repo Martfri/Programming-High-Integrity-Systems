@@ -38,7 +38,7 @@ def testVoterA(voterLib, logFile) -> bool:
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
-    #print([sensor1, sensor2, sensor3])
+    # print([sensor1, sensor2, sensor3])
     expectedResult = Voter1.voter1([sensor1, sensor2, sensor3])
     voterResult = runVoterA(voterLib, sensor1, sensor2, sensor3)
     if voterResult == expectedResult:
@@ -63,7 +63,7 @@ def testVoterB(voterLib, logFile) -> bool:
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
-    print([sensor1, sensor2, sensor3])
+    # print([sensor1, sensor2, sensor3])
     expectedResult = Voter2.voter2([sensor1, sensor2, sensor3])
     voterResult = runVoterB(voterLib, sensor1, sensor2, sensor3)
     if voterResult == expectedResult:
@@ -77,12 +77,12 @@ def testVoter3(voterLib, logFile, input1, input2) -> bool:
     flowcontrol = c_uint32(0)
     expectedResult = Voter3.voter3(input1, input2)
     voterResult = voterLib.runStage2Voter(input1, input2, pointer(enterSafeState), pointer(flowcontrol))
-    print(f"Input for voter3: {input1}, {input2}")
+    # print(f"Input for voter3: {input1}, {input2}")
     if bool(enterSafeState) == expectedResult:
-        print("Outcome of Voter 3 matched expected result")
+        # print("Outcome of Voter 3 matched expected result")
         return True
     else:
-        print("Outcome of Voter 3 didn't match expected result")
+        # print("Outcome of Voter 3 didn't match expected result")
         logFile.write(f"Voter 1 and 2 inputs: ({input1}, {input2}), Voter 3 returned {voterResult}, expected {expectedResult}\n")
         return False
 
@@ -130,7 +130,7 @@ def main() -> int:
     TEST_ITERATION = 20000
 
     # unit test voter A
-    print("Test voter A:")
+    # print("Test voter A:")
     logFile.write("Failed Tests for voter A:\n")
     for _ in range(TEST_ITERATION):
         if testVoterA(voterLib, logFile):
@@ -140,7 +140,7 @@ def main() -> int:
             numTestsVoterA = numTestsVoterA + 1
 
     # unit test voter B
-    print("Test voter B:")
+    # print("Test voter B:")
     logFile.write("Failed Tests for voter B:\n")
     for _ in range(TEST_ITERATION):
         if testVoterB(voterLib, logFile):
@@ -151,7 +151,7 @@ def main() -> int:
 
 
     # unit test voter 3
-    print("Test Voter 3:")
+    # print("Test Voter 3:")
     logFile.write("Failed Tests for voter 3:\n")
     if testVoter3(voterLib, logFile, True, True):
         numTestsVoter3 = numTestsVoter3 + 1
@@ -178,7 +178,7 @@ def main() -> int:
         numTestsVoter3 = numTestsVoter3 + 1
 
     # system / integration test
-    print("Test System/ Integration:")
+    # print("Test System/ Integration:")
     logFile.write("Failed Tests for System/ Integration Test:\n")
     p = subprocess.Popen("./phis_test", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     for _ in range(TEST_ITERATION):
@@ -187,7 +187,7 @@ def main() -> int:
         else:
             numFailedTestsIntegration = numFailedTestsIntegration + 1
             numTestsIntegration = numTestsIntegration+ 1
-        print(f"{numTestsIntegration} from {TEST_ITERATION}")
+        #print(f"{numTestsIntegration} from {TEST_ITERATION}")
     p.stdin.write(b'q\n')
 
     # prints for Voter A
