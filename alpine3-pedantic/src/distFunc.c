@@ -57,10 +57,10 @@ static bool isDistanceSafe_A(uint8_t distance) {
  * @param distance_B: float of distance value
  * @return true if retVal ist E_NOT_OK or E_ERROR
  */
-static bool isDistanceSafe_B(float distance_B) {
+static bool isDistanceSafe_B(float distance_B, returnType_en retVal) {
     bool safe = false;
 
-    if (MAX_UNSAFE_DISTANCE <= distance_B  &&  MAX_OPERATIONAL_DISTANCE >= distance_B  ) {
+    if (MAX_UNSAFE_DISTANCE <= distance_B  &&  MAX_OPERATIONAL_DISTANCE >= distance_B) {
         safe = true;
     } else {
         safe = false;
@@ -96,8 +96,11 @@ returnType_en evaluateDistance_BlockA(sensor_t const sensorReadings[], bool* dis
 #endif
 
     } else {
+#ifdef DEBUG
         (void)printf("Sensors did not provide reliable readings\n\n");
+#endif
         retVal = E_NOT_OK;
+        *distanceIsSafe_A = false;
     }
 
     *ptr_flowControl = *ptr_flowControl + 1;
@@ -120,7 +123,7 @@ returnType_en evaluateDistance_BlockB(sensor_t const sensorReadings[], bool* dis
 
     float distance_B = computeDistance_B(votedValue_B);
 
-    *distanceIsSafe_B = isDistanceSafe_B(distance_B);
+    *distanceIsSafe_B = isDistanceSafe_B(distance_B, retVal);
 
 #ifdef DEBUG
     (void)printf("Voted Current B: %i (10*mA)\n", votedValue_B);

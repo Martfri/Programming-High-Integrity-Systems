@@ -14,7 +14,7 @@ def Integration(s1, s2, s3) -> bool:
     OutcomeVoter1 = Voter1.voter1(SensorValues)
     OutcomeVoter2 = Voter2.voter2(SensorValues)
 
-    OutcomeVoter3 = Voter3.voter3(OutcomeVoter1, OutcomeVoter2)
+    OutcomeVoter3 = Voter3.voter3(not OutcomeVoter1, not OutcomeVoter2)
 
     if OutcomeVoter3 == True:
         Safestate = True
