@@ -26,6 +26,19 @@ static bool allSensorsOperational(sensor_t const sensorReadings[]) {
     return allOperational;
 }
 
+static uint8_t max(const sensor_t sensorReadings[])
+{
+    uint8_t max = 0;
+    for(int indx=0 ; indx < NR_OF_SENSORS; indx++)
+    {
+        if(sensorReadings[indx].reading > max)
+        {
+            max = sensorReadings[indx].reading ;
+        }
+    }
+    return max;
+}
+
 /**
  * @brief runs the implementation A of first stage voter
  *
@@ -38,12 +51,12 @@ returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, in
 
     // for (int i = 0; i < 3; i++) printf("value %d: %d\n", i, sensorReadings[i].reading);
 
-    if (true == allSensorsOperational(sensorReadings)) {
+    if (true == allSensorsOperational(sensorReadings) && max(sensorReadings) < 184) {
         uint8_t diff1 = (uint8_t)abs(sensorReadings[0].reading - sensorReadings[1].reading);
         uint8_t diff2 = (uint8_t)abs(sensorReadings[1].reading - sensorReadings[2].reading);
         uint8_t diff3 = (uint8_t)abs(sensorReadings[0].reading - sensorReadings[2].reading);
 
-        if (SENSOR_ACCURACY >= diff1 && SENSOR_ACCURACY >= diff2 && SENSOR_ACCURACY >= diff3) {
+        if (SENSOR_ACCURACY >= diff1 && SENSOR_ACCURACY >= diff2 && SENSOR_ACCURACY >= diff3){
             *bestValue = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
             retVal = E_OK;
         } else {
