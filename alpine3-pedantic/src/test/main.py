@@ -5,7 +5,7 @@ import RandomNumberGenerator
 import Voter1
 import Voter2
 import Voter3
-from Integration import Integration
+import Integration
 import socket
 import subprocess
 import time
@@ -19,8 +19,6 @@ class sensor_t(Structure):
 Uint8Array3 = c_uint8 * 3
 Uint8Array4 = c_uint8 * 4
 SensorArray3 = sensor_t * 3
-
-
 
 def runVoterA(voterLib, sensor1, sensor2, sensor3) -> bool:
     sensorMsg = Uint8Array4(sensor1, sensor2, sensor3, 0)
@@ -108,11 +106,12 @@ def testIntegration(voterLib, logFile, process, numTestsIntegration) -> bool:
     sensor3 = RandomNumberGenerator.RandNum()[2]
     # print([sensor1, sensor2, sensor3])
     ImplementationResult = runSystem(sensor1, sensor2, sensor3, process)
-    expectedResult = Integration(sensor1, sensor2, sensor3)
+    expectedResult = Integration.Integration(sensor1, sensor2, sensor3)
+    # lastState = expectedResult
     if ImplementationResult == expectedResult:
         return True
     else:
-        logFile.write(f"{numTestsIntegration}: Sensor values: ({sensor1}, {sensor2}, {sensor3}), Implementation returned {ImplementationResult}, expected {expectedResult}\n")
+        logFile.write(f"{numTestsIntegration}: Sensor values: ({sensor1}, {sensor2}, {sensor3}), last State: {lastOutcome}, Implementation returned {ImplementationResult}, expected {expectedResult}\n")
         return False
 
 def main() -> int:

@@ -2,8 +2,11 @@ import Voter1
 import Voter2
 import Voter3
 
+global lastOutcome
+lastOutcome = True
 
 def Integration(s1, s2, s3) -> bool:
+    global lastOutcome
     ConsideredValue = 0
     SensorValues = [s1, s2, s3]
     #print(SensorValues)
@@ -25,5 +28,8 @@ def Integration(s1, s2, s3) -> bool:
 
     #print("Roboter is in Safestate: %s" %"True" if Safestate else "Roboter is in Safestate: False")
     #print("h")
-
+    newOutcome = Safestate
+    if newOutcome is not lastOutcome:
+        Safestate = lastOutcome
+    lastOutcome = newOutcome
     return Safestate

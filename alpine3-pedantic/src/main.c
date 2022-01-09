@@ -77,7 +77,7 @@ static returnType_en terminate(int const *socket_desc, pthread_t const *cliThrea
     return retVal;
 }
 
-/*static void movingAverageFilter(bool* enterSafeState, bool* old_enterSafeState){
+static void movingAverageFilter(bool* enterSafeState, bool* old_enterSafeState){
     int x[2] = {1 , 1};
     float h[2] = {0.5, 0.5}; //filter coefficients
     bool new_enterSafeState = *enterSafeState;
@@ -102,7 +102,7 @@ static returnType_en terminate(int const *socket_desc, pthread_t const *cliThrea
 
     *old_enterSafeState = new_enterSafeState;
 
-}*/
+}
 
 int main() {
     returnType_en retVal;
@@ -111,7 +111,7 @@ int main() {
     bool enterSafeState = true, distanceIsSafe_A = false, distanceIsSafe_B = false, rcvdExitCmd = false;
     int socket_desc;
     int32_t flowControl = 0;
-    //bool old_enterSafeState = true;
+    bool old_enterSafeState = true;
 
 #ifdef DEBUG
     (void)printf("Starting Program\n");
@@ -170,7 +170,7 @@ int main() {
             enterSafeState = true;
         }
 
-        //movingAverageFilter(&enterSafeState, &old_enterSafeState);
+        movingAverageFilter(&enterSafeState, &old_enterSafeState);
 
         /* Display System Decision */
         (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
