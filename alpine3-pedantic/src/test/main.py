@@ -101,6 +101,7 @@ def runSystem(sensor1, sensor2, sensor3, process) -> bool:
         sys.exit(-1)
 
 def testIntegration(voterLib, logFile, process, numTestsIntegration) -> bool:
+    global lastOutcome
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
@@ -126,7 +127,7 @@ def main() -> int:
     voterLib = CDLL(voterLibFile)
     logFile = open("../results_test.txt", 'w')
 
-    TEST_ITERATION = 20000
+    TEST_ITERATION = 2000000
 
     # unit test voter A
     # print("Test voter A:")
@@ -186,7 +187,7 @@ def main() -> int:
         else:
             numFailedTestsIntegration = numFailedTestsIntegration + 1
             numTestsIntegration = numTestsIntegration+ 1
-        #print(f"{numTestsIntegration} from {TEST_ITERATION}")
+        print(f"{numTestsIntegration} from {TEST_ITERATION}")
     p.stdin.write(b'q\n')
 
     # prints for Voter A

@@ -48,7 +48,7 @@ returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, in
 
     // for (int i = 0; i < 3; i++) printf("value %d: %d\n", i, sensorReadings[i].reading);
 
-    if (true == allSensorsOperational(sensorReadings) && maxReading(sensorReadings) < 184) {
+    if (true == allSensorsOperational(sensorReadings) && maxReading(sensorReadings) <= 184) {
         uint8_t diff1 = (uint8_t)abs(sensorReadings[0].reading - sensorReadings[1].reading);
         uint8_t diff2 = (uint8_t)abs(sensorReadings[1].reading - sensorReadings[2].reading);
         uint8_t diff3 = (uint8_t)abs(sensorReadings[0].reading - sensorReadings[2].reading);
@@ -110,7 +110,7 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
             (void)printf("Sensor values in range and tolerance.\n");
         }
 #endif
-        if (sensorReadings[0].reading <= OPERATIONAL_CURR_SAFE && sensorReadings[0].reading <= OPERATIONAL_CURR_SAFE && sensorReadings[0].reading <= OPERATIONAL_CURR_SAFE) {
+        if (sensorReadings[0].reading <= OPERATIONAL_CURR_SAFE && sensorReadings[1].reading <= OPERATIONAL_CURR_SAFE && sensorReadings[2].reading <= OPERATIONAL_CURR_SAFE) {
             *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
             retVal = E_OK;
         } else {
