@@ -39,7 +39,7 @@ static returnType_en init(int *socket_desc, pthread_t *cliThread, bool *rcvdExit
     server_addr.sin_addr.s_addr = inet_addr(IP);
 
     // Bind to the set port and IP:
-    /* sockaddr is a generic descriptor for any kind of socket operation, 
+    /* sockaddr is a generic descriptor for any kind of socket operation,
     whereas sockaddr_in is a struct specific to IP-based communication.  */
     if (bind(*socket_desc, (struct sockaddr *)&server_addr, (unsigned int)sizeof(server_addr)) < 0) {  //lint !e740
         (void)printf("ERROR: Couldn't bind to the port\n");
@@ -77,19 +77,19 @@ static returnType_en terminate(int const *socket_desc, pthread_t const *cliThrea
     return retVal;
 }
 
-static void movingAverageFilter(bool* enterSafeState, bool* old_enterSafeState){
-    int x[2] = {1 , 1}; 
+/*static void movingAverageFilter(bool* enterSafeState, bool* old_enterSafeState){
+    int x[2] = {1 , 1};
     float h[2] = {0.5, 0.5}; //filter coefficients
     bool new_enterSafeState = *enterSafeState;
 
-    x[0] = *old_enterSafeState; 
-    x[1] = new_enterSafeState; 
+    x[0] = *old_enterSafeState;
+    x[1] = new_enterSafeState;
 
     if((h[1]*x[0]+h[0]*x[1]) < 1.0f){
-        *enterSafeState = *old_enterSafeState; 
+        *enterSafeState = *old_enterSafeState;
     }
     else{
-        *enterSafeState = new_enterSafeState; 
+        *enterSafeState = new_enterSafeState;
     }
 
 #ifdef DEBUG
@@ -102,7 +102,7 @@ static void movingAverageFilter(bool* enterSafeState, bool* old_enterSafeState){
 
     *old_enterSafeState = new_enterSafeState;
 
-}
+}*/
 
 int main() {
     returnType_en retVal;
@@ -111,7 +111,7 @@ int main() {
     bool enterSafeState = true, distanceIsSafe_A = false, distanceIsSafe_B = false, rcvdExitCmd = false;
     int socket_desc;
     int32_t flowControl = 0;
-    bool old_enterSafeState = true;
+    //bool old_enterSafeState = true;
 
 #ifdef DEBUG
     (void)printf("Starting Program\n");
@@ -170,7 +170,7 @@ int main() {
             enterSafeState = true;
         }
 
-        movingAverageFilter(&enterSafeState, &old_enterSafeState);
+        //movingAverageFilter(&enterSafeState, &old_enterSafeState);
 
         /* Display System Decision */
         (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
@@ -180,9 +180,9 @@ int main() {
 #ifdef DEBUG
         (void) clock_gettime(CLOCK_REALTIME, &end);
         // (void)printf("time end count is:%ld\n", end.tv_sec);
-        cpu_time_sec = ((double)(end.tv_sec - start.tv_sec));  
-        cpu_time_ns = ((double)(end.tv_nsec - start.tv_nsec)) / BILLION;  
-        cpu_time = cpu_time_sec + cpu_time_ns;  //measured time for one while loop 
+        cpu_time_sec = ((double)(end.tv_sec - start.tv_sec));
+        cpu_time_ns = ((double)(end.tv_nsec - start.tv_nsec)) / BILLION;
+        cpu_time = cpu_time_sec + cpu_time_ns;  //measured time for one while loop
         (void)printf("The iteration took %.6f seconds to execute \n\n", cpu_time);
 #endif
     }

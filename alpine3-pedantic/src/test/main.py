@@ -102,7 +102,7 @@ def runSystem(sensor1, sensor2, sensor3, process) -> bool:
         process.stdin.write(b'q\n')
         sys.exit(-1)
 
-def testIntegration(voterLib, logFile, process) -> bool:
+def testIntegration(voterLib, logFile, process, numTestsIntegration) -> bool:
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
@@ -112,7 +112,7 @@ def testIntegration(voterLib, logFile, process) -> bool:
     if ImplementationResult == expectedResult:
         return True
     else:
-        logFile.write(f"Sensor values: ({sensor1}, {sensor2}, {sensor3}), Implementation returned {ImplementationResult}, expected {expectedResult}\n")
+        logFile.write(f"{numTestsIntegration}: Sensor values: ({sensor1}, {sensor2}, {sensor3}), Implementation returned {ImplementationResult}, expected {expectedResult}\n")
         return False
 
 def main() -> int:
@@ -127,7 +127,7 @@ def main() -> int:
     voterLib = CDLL(voterLibFile)
     logFile = open("../results_test.txt", 'w')
 
-    TEST_ITERATION = 200
+    TEST_ITERATION = 20000
 
     # unit test voter A
     print("Test voter A:")
@@ -181,13 +181,13 @@ def main() -> int:
     print("Test System/ Integration:")
     logFile.write("Failed Tests for System/ Integration Test:\n")
     p = subprocess.Popen("./phis_test", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-    for _ in range(200):
-        if testIntegration(voterLib, logFile, p):
+    for _ in range(TEST_ITERATION):
+        if testIntegration(voterLib, logFile, p, numTestsIntegration):
             numTestsIntegration = numTestsIntegration+ 1
         else:
             numFailedTestsIntegration = numFailedTestsIntegration + 1
             numTestsIntegration = numTestsIntegration+ 1
-        print(f"{numTestsIntegration} from 200")
+        print(f"{numTestsIntegration} from {TEST_ITERATION}")
     p.stdin.write(b'q\n')
 
     # prints for Voter A
