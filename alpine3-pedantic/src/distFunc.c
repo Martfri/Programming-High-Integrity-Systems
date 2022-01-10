@@ -83,7 +83,6 @@ returnType_en evaluateDistance_BlockA(sensor_t const sensorReadings[], bool* dis
     retVal = runVoter_A(sensorReadings, &votedValue, ptr_flowControl);
 
     if (E_OK == retVal) {
-        /*TODO evaluate computed value*/
         distance = computeDistance_A(votedValue);
         *distanceIsSafe_A = isDistanceSafe_A(distance);
 
