@@ -77,31 +77,39 @@ static returnType_en terminate(int const *socket_desc, pthread_t const *cliThrea
     return retVal;
 }
 
-static void movingAverageFilter(bool* enterSafeState, bool* old_enterSafeState){
-    int x[2] = {1 , 1};
-    float h[2] = {0.5, 0.5}; //filter coefficients
+static void movingAverageFilter(bool *enterSafeState, bool *old_enterSafeState) {
+    int x[2] = {1, 1};
+    float h[2] = {0.5, 0.5};  //filter coefficients
     bool new_enterSafeState = *enterSafeState;
 
     x[0] = *old_enterSafeState;
     x[1] = new_enterSafeState;
 
-    if((h[1]*x[0]+h[0]*x[1]) < 1.0f){
+    if ((h[1] * x[0] + h[0] * x[1]) < 1.0f) {
         *enterSafeState = *old_enterSafeState;
-    }
-    else{
+    } else {
         *enterSafeState = new_enterSafeState;
     }
 
 #ifdef DEBUG
     (void)printf("x[0] %i\n", x[0]);
     (void)printf("x[1] %i\n", x[1]);
-    float filter = h[1]*x[0]+h[0]*x[1];
+    float filter = h[1] * x[0] + h[0] * x[1];
     (void)printf("filter %f\n", filter);
 
 #endif
 
     *old_enterSafeState = new_enterSafeState;
+}
 
+static void safetyControlChecks(returnType_en const retVal, int32_t const flowControl, bool *enterSafeState) {
+#ifdef DEBUG
+    (void)printf("flowControl count is:%i\n", flowControl);
+#endif
+
+    if (E_OK != retVal || flowControl != 5) {
+        *enterSafeState = true;
+    }
 }
 
 int main() {
@@ -162,24 +170,16 @@ int main() {
 
         retVal |= runStage2Voter(distanceIsSafe_A, distanceIsSafe_B, &enterSafeState, &flowControl);  //lint !e655
 
-#ifdef DEBUG
-        (void)printf("flowControl count is:%i\n", flowControl);
-#endif
-
-        if (E_OK != retVal || flowControl != 5) {
-            enterSafeState = true;
-        }
+        safetyControlChecks(retVal, flowControl, &enterSafeState);
 
         movingAverageFilter(&enterSafeState, &old_enterSafeState);
 
         /* Display System Decision */
         (void)printf("Go To Safe State: %s\n", enterSafeState ? "TRUE" : "FALSE");
         (void)fflush(stdout);
-        //(void)sleep(1);  // TODO check if it is needed
 
 #ifdef DEBUG
         (void)clock_gettime(CLOCK_REALTIME, &end);
-        // (void)printf("time end count is:%ld\n", end.tv_sec);
         cpu_time_sec = ((double)(end.tv_sec - start.tv_sec));
         cpu_time_ns = ((double)(end.tv_nsec - start.tv_nsec)) / BILLION;
         cpu_time = cpu_time_sec + cpu_time_ns;  //measured time for one while loop
