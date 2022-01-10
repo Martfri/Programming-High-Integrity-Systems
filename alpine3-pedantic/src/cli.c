@@ -12,8 +12,6 @@ void *readCLI(void *_rcvdExitCmd) {
     char line[50];
     int length = 0;
 
-    // printf("CLI thread started\n");
-
     while (false == *rcvdExitCmd) {
         length = 0;
         while ((line[length] = (char)getchar()) != '\n') {
