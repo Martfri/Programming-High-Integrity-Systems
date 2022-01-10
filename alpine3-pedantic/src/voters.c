@@ -46,8 +46,6 @@ static uint8_t maxReading(const sensor_t sensorReadings[]) {
 returnType_en runVoter_A(sensor_t const sensorReadings[], uint8_t* bestValue, int32_t* ptr_flowControl) {
     returnType_en retVal = E_NOT_OK;
 
-    // for (int i = 0; i < 3; i++) printf("value %d: %d\n", i, sensorReadings[i].reading);
-
     if (true == allSensorsOperational(sensorReadings) && maxReading(sensorReadings) <= 184) {
         uint8_t diff1 = (uint8_t)abs(sensorReadings[0].reading - sensorReadings[1].reading);
         uint8_t diff2 = (uint8_t)abs(sensorReadings[1].reading - sensorReadings[2].reading);
