@@ -28,9 +28,9 @@ static void printSensorReadings(sensor_t const sensorReadings[]) {
  */
 
 #ifdef TEST
-        void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]) {
+void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]) {
 #else
-        static void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]) {
+static void evaluateSensors(uint8_t const sensorMsg[], sensor_t sensorReadings[]) {
 #endif
 
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
@@ -59,6 +59,7 @@ returnType_en readSensors(int sockfd, sensor_t sensorReadings[]) {
     uint8_t sensorMsg[3];
     struct sockaddr_in client_addr;
     int client_struct_length = sizeof(client_addr);
+    returnType_en retVal;
 
     if (sensorMsg != memset(sensorMsg, '\0', sizeof(sensorMsg))) {
         (void)printf("Memset Failed to Reset SensorMsg \n");
@@ -68,18 +69,15 @@ returnType_en readSensors(int sockfd, sensor_t sensorReadings[]) {
     whereas sockaddr_in is a struct specific to IP-based communication.  */
     if (recvfrom(sockfd, sensorMsg, sizeof(sensorMsg), 0, (struct sockaddr *)&client_addr, (void *)&client_struct_length) < 0) {  //lint !e740
         (void)printf("ERROR: Failed to receive reading\n");
-        return E_NOT_OK;
+        retVal = E_NOT_OK;
     } else {
+        evaluateSensors(sensorMsg, sensorReadings);
+        retVal = E_OK;
 #ifdef DEBUG
         (void)printf("sensor message: %d %d %d \n", sensorMsg[0], sensorMsg[1], sensorMsg[2]);
+        printSensorReadings(sensorReadings);
 #endif
     }
 
-    evaluateSensors(sensorMsg, sensorReadings);
-
-#ifdef DEBUG
-    printSensorReadings(sensorReadings);
-#endif
-
-    return E_OK;
+    return retVal;
 }
