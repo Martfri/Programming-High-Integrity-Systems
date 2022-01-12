@@ -87,14 +87,14 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
         if (sensorReadings[sensorIdx].reading < OPERATIONAL_CURR_MIN)  //checks, if there is a sensor with current value below Operational_CURR_MIN
         {
             retVal = E_NOT_OK;
-            *votedValue_B = noValue;
+            *votedValue_B = NO_VALUE;
 #ifdef DEBUG
             (void)printf("A sensor value is < OPERATIONAL_CURR_MIN.\n");
 #endif
             break;
         } else if (sensorReadings[sensorIdx].reading > OPERATIONAL_CURR_MAX) {
             retVal = E_NOT_OK;
-            *votedValue_B = noValue;
+            *votedValue_B = NO_VALUE;
 #ifdef DEBUG
             (void)printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");
 #endif
@@ -105,8 +105,8 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
     if ((uint8_t)abs(sensorReadings[2].reading - sensorReadings[1].reading) <= SENSOR_ACCURACY &&
         (uint8_t)abs(sensorReadings[2].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
         (uint8_t)abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
-        *votedValue_B != noValue) {
-            
+        *votedValue_B != NO_VALUE) {
+
 #ifdef DEBUG
         {
             (void)printf("Sensor values in range and tolerance.\n");
@@ -116,7 +116,7 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
             *votedValue_B = (sensorReadings[0].reading + sensorReadings[1].reading + sensorReadings[2].reading) / NR_OF_SENSORS;
             retVal = E_OK;
         } else {
-            *votedValue_B = noValue;
+            *votedValue_B = NO_VALUE;
             retVal = E_NOT_OK;
         }
     }
@@ -125,7 +125,7 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
 #ifdef DEBUG
         (void)printf("Sensor values are not within SENSOR_ACCURACY.\n");
 #endif
-        *votedValue_B = noValue;
+        *votedValue_B = NO_VALUE;
         retVal = E_NOT_OK;
     }
 
