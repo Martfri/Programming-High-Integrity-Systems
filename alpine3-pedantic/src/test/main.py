@@ -32,9 +32,9 @@ def runVoterA(voterLib, sensor1, sensor2, sensor3) -> bool:
     voterLib.evaluateSensors(sensorMsg, sensorReadings)
     voterLib.evaluateDistance_BlockA(sensorReadings, pointer(voterResult), pointer(flowcontrol))
     if voterResult:
-        return False
-    else:
         return True
+    else:
+        return False
 
 def testVoterA(voterLib, logFile) -> bool:
     '''
@@ -45,7 +45,7 @@ def testVoterA(voterLib, logFile) -> bool:
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
     # print([sensor1, sensor2, sensor3])
-    expectedResult = Voter1.voter1([sensor1, sensor2, sensor3])
+    expectedResult = not Voter1.voter1([sensor1, sensor2, sensor3])
     voterResult = runVoterA(voterLib, sensor1, sensor2, sensor3)
     if voterResult == expectedResult:
         return True
@@ -65,9 +65,9 @@ def runVoterB(voterLib, sensor1, sensor2, sensor3) -> bool:
     voterLib.evaluateSensors(sensorMsg, sensorReadings)
     voterLib.evaluateDistance_BlockB(sensorReadings, pointer(voterResult), pointer(flowcontrol))
     if voterResult:
-        return False
-    else:
         return True
+    else:
+        return False
 
 def testVoterB(voterLib, logFile) -> bool:
     '''
@@ -78,7 +78,7 @@ def testVoterB(voterLib, logFile) -> bool:
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
     # print([sensor1, sensor2, sensor3])
-    expectedResult = Voter2.voter2([sensor1, sensor2, sensor3])
+    expectedResult = not Voter2.voter2([sensor1, sensor2, sensor3])
     voterResult = runVoterB(voterLib, sensor1, sensor2, sensor3)
     if voterResult == expectedResult:
         return True
@@ -101,7 +101,7 @@ def testVoter3(voterLib, logFile, input1, input2) -> bool:
         return True
     else:
         # print("Outcome of Voter 3 didn't match expected result")
-        logFile.write(f"Voter 1 and 2 inputs: ({input1}, {input2}), Voter 3 returned {voterResult}, expected {expectedResult}\n")
+        logFile.write(f"Voter 1 and 2 inputs: ({input1}, {input2}), Stage2Voter returned {voterResult}, expected {expectedResult}\n")
         return False
 
 def runSystem(sensor1, sensor2, sensor3, process) -> bool:
