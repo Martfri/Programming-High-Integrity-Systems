@@ -86,13 +86,15 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
     for (uint8_t sensorIdx = 0; sensorIdx < NR_OF_SENSORS; sensorIdx++) {
         if (sensorReadings[sensorIdx].reading < OPERATIONAL_CURR_MIN)  //checks, if there is a sensor with current value below Operational_CURR_MIN
         {
-            retVal = E_ERROR;
+            retVal = E_NOT_OK;
+            *votedValue_B = noValue;
 #ifdef DEBUG
             (void)printf("A sensor value is < OPERATIONAL_CURR_MIN.\n");
 #endif
             break;
         } else if (sensorReadings[sensorIdx].reading > OPERATIONAL_CURR_MAX) {
-            retVal = E_ERROR;
+            retVal = E_NOT_OK;
+            *votedValue_B = noValue;
 #ifdef DEBUG
             (void)printf("A sensor value is > OPERATIONAL_CURR_MAX.\n");
 #endif
@@ -102,7 +104,9 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
 
     if ((uint8_t)abs(sensorReadings[2].reading - sensorReadings[1].reading) <= SENSOR_ACCURACY &&
         (uint8_t)abs(sensorReadings[2].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
-        (uint8_t)abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY) {
+        (uint8_t)abs(sensorReadings[1].reading - sensorReadings[0].reading) <= SENSOR_ACCURACY &&
+        *votedValue_B != noValue) {
+            
 #ifdef DEBUG
         {
             (void)printf("Sensor values in range and tolerance.\n");
