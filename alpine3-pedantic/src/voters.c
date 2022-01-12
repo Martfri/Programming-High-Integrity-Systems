@@ -113,6 +113,7 @@ returnType_en runVoter_B(sensor_t const sensorReadings[], int32_t* votedValue_B,
             retVal = E_OK;
         } else {
             *votedValue_B = noValue;
+            retVal = E_NOT_OK;
         }
     }
 
