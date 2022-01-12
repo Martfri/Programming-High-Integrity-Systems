@@ -127,10 +127,10 @@ def main() -> int:
     voterLib = CDLL(voterLibFile)
     logFile = open("../results_test.txt", 'w')
 
-    TEST_ITERATION = 2000000
+    TEST_ITERATION = 10000000
 
     # unit test voter A
-    # print("Test voter A:")
+    print("Testing voter A ...")
     logFile.write("Failed Tests for voter A:\n")
     for _ in range(TEST_ITERATION):
         if testVoterA(voterLib, logFile):
@@ -140,7 +140,7 @@ def main() -> int:
             numTestsVoterA = numTestsVoterA + 1
 
     # unit test voter B
-    # print("Test voter B:")
+    print("Testinig voter B ...")
     logFile.write("Failed Tests for voter B:\n")
     for _ in range(TEST_ITERATION):
         if testVoterB(voterLib, logFile):
@@ -151,7 +151,7 @@ def main() -> int:
 
 
     # unit test voter 3
-    # print("Test Voter 3:")
+    print("Testing stage2voter ...")
     logFile.write("Failed Tests for voter 3:\n")
     if testVoter3(voterLib, logFile, True, True):
         numTestsVoter3 = numTestsVoter3 + 1
@@ -179,6 +179,7 @@ def main() -> int:
 
     # system / integration test
     # print("Test System/ Integration:")
+    print("Testing system ...")
     logFile.write("Failed Tests for System/ Integration Test:\n")
     p = subprocess.Popen("./phis_test", stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     for _ in range(TEST_ITERATION):
@@ -187,7 +188,7 @@ def main() -> int:
         else:
             numFailedTestsIntegration = numFailedTestsIntegration + 1
             numTestsIntegration = numTestsIntegration+ 1
-        print(f"{numTestsIntegration} from {TEST_ITERATION}")
+        # print(f"{numTestsIntegration} from {TEST_ITERATION}")
     p.stdin.write(b'q\n')
 
     # prints for Voter A

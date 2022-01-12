@@ -30,15 +30,17 @@ OBJ=$(patsubst %.c, %.o, $(SRC))
 HDR=$(wildcard *.h)
 
 %.o: %.c $(HDR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 .PRECIOUS: $(TARGET) $(OBJ)
 
 $(TARGET_SO): $(OBJ)
+	@echo "Building shared object"
 	$(CC)  $(OBJ) $(LDFLAGS) -o $@
 	-rm -f ../*.o
 
 $(TARGET_BIN):
+	@echo "Building testing executable"
 	cd .. && make test/$(TARGET_BIN)
 
 clean:
