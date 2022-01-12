@@ -36,7 +36,6 @@
  *
  */
 typedef enum {
-    E_ERROR = -1,
     E_OK = 0,
     E_NOT_OK = 1
 } returnType_en;
