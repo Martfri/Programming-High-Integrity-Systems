@@ -21,6 +21,10 @@ Uint8Array4 = c_uint8 * 4
 SensorArray3 = sensor_t * 3
 
 def runVoterA(voterLib, sensor1, sensor2, sensor3) -> bool:
+    '''
+    run c implementation of voterA with sensor1-3 as input and returns its output
+    voterLib represents the shared object file containing the c functions
+    '''
     sensorMsg = Uint8Array4(sensor1, sensor2, sensor3, 0)
     sensorReadings = SensorArray3()
     voterResult = c_bool()
@@ -33,6 +37,10 @@ def runVoterA(voterLib, sensor1, sensor2, sensor3) -> bool:
         return True
 
 def testVoterA(voterLib, logFile) -> bool:
+    '''
+    Test voterA with 3 random values for 3 sensors
+    Returns test result
+    '''
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
@@ -46,6 +54,10 @@ def testVoterA(voterLib, logFile) -> bool:
         return False
 
 def runVoterB(voterLib, sensor1, sensor2, sensor3) -> bool:
+    '''
+    run c implementation of voterB with sensor1-3 as input and returns its output
+    voterLib represents the shared object file containing the c functions
+    '''
     sensorMsg = Uint8Array4(sensor1, sensor2, sensor3, 0)
     sensorReadings = SensorArray3()
     voterResult = c_bool()
@@ -58,6 +70,10 @@ def runVoterB(voterLib, sensor1, sensor2, sensor3) -> bool:
         return True
 
 def testVoterB(voterLib, logFile) -> bool:
+    '''
+    Test voterB with 3 random values for 3 sensors
+    Returns test result
+    '''
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
     sensor3 = RandomNumberGenerator.RandNum()[2]
@@ -71,6 +87,10 @@ def testVoterB(voterLib, logFile) -> bool:
         return False
 
 def testVoter3(voterLib, logFile, input1, input2) -> bool:
+    '''
+    Test Stage2Voter with every possible input
+    Returns test result
+    '''
     enterSafeState = c_bool(True)
     flowcontrol = c_uint32(0)
     expectedResult = Voter3.voter3(input1, input2)
@@ -85,6 +105,9 @@ def testVoter3(voterLib, logFile, input1, input2) -> bool:
         return False
 
 def runSystem(sensor1, sensor2, sensor3, process) -> bool:
+    '''
+    Gives 3 sensor values to the c-program and fetch its output
+    '''
     input = Uint8Array3(sensor1, sensor2, sensor3)
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         addr = ("127.0.0.1", 8080)
@@ -101,6 +124,10 @@ def runSystem(sensor1, sensor2, sensor3, process) -> bool:
         sys.exit(-1)
 
 def testIntegration(voterLib, logFile, process, numTestsIntegration) -> bool:
+    '''
+    Tests the entire system / integration of all voters by using a golden Model
+    and random inputs
+    '''
     global lastOutcome
     sensor1 = RandomNumberGenerator.RandNum()[0]
     sensor2 = RandomNumberGenerator.RandNum()[1]
@@ -108,7 +135,6 @@ def testIntegration(voterLib, logFile, process, numTestsIntegration) -> bool:
     # print([sensor1, sensor2, sensor3])
     ImplementationResult = runSystem(sensor1, sensor2, sensor3, process)
     expectedResult = Integration.Integration(sensor1, sensor2, sensor3)
-    # lastState = expectedResult
     if ImplementationResult == expectedResult:
         return True
     else:
@@ -116,6 +142,9 @@ def testIntegration(voterLib, logFile, process, numTestsIntegration) -> bool:
         return False
 
 def main() -> int:
+    '''
+    Run all verification tests and output the results
+    '''
     numFailedTestsVoterA = 0
     numTestsVoterA = 0
     numFailedTestsVoterB = 0
@@ -193,23 +222,23 @@ def main() -> int:
 
     # prints for Voter A
     print(f"Test Voter A: {numFailedTestsVoterA} from {numTestsVoterA} tests failed")
-    logFile.write(f"Test Voter A: {numFailedTestsVoterA} from {numTestsVoterA} tests failed\n\n")
+    logFile.write(f"\nTest Voter A: {numFailedTestsVoterA} from {numTestsVoterA} tests failed\n")
 
     # prints for Voter B
     print(f"Test Voter B: {numFailedTestsVoterB} from {numTestsVoterB} tests failed")
-    logFile.write(f"Test Voter B: {numFailedTestsVoterB} from {numTestsVoterB} tests failed\n\n")
+    logFile.write(f"Test Voter B: {numFailedTestsVoterB} from {numTestsVoterB} tests failed\n")
 
     # prints for Voter 3
     print(f"Test Voter 3: {numFailedTestsVoter3} from {numTestsVoter3} tests failed")
-    logFile.write(f"Test Voter 3: {numFailedTestsVoter3} from {numTestsVoter3} tests failed\n\n")
+    logFile.write(f"Test Voter 3: {numFailedTestsVoter3} from {numTestsVoter3} tests failed\n")
 
     # prints for System / Integration Test
     if (numFailedTestsIntegration == 0):
         print(f"System/ Integration Test: All tests passed (With {numTestsIntegration} tests in total)")
-        logFile.write(f"System/ Integration Test: All tests passed (With {numTestsIntegration} tests in total)")
+        logFile.write(f"System/ Integration Test: All tests passed (With {numTestsIntegration} tests in total)\n\n")
     else:
         print(f"System/ Integration Test: {numFailedTestsIntegration} from {numTestsIntegration} tests failed")
-        logFile.write(f"System/ Integration Test: {numFailedTestsIntegration} from {numTestsIntegration} tests failed")
+        logFile.write(f"System/ Integration Test: {numFailedTestsIntegration} from {numTestsIntegration} tests failed\n\n")
 
     # prints for total
     numFailedTestsTotal = numFailedTestsVoterA + numFailedTestsVoterB + numFailedTestsVoter3 + numFailedTestsIntegration
