@@ -5,7 +5,7 @@ Implementation of a safety system for a robot. The safety system puts the robot 
 
 SF1: If a person is in proximity (2m), the robot shall go into the safe state
 R1.2: The sensors give as an output a current value between 0 mA and 20 mA
-R1.3: The sensor has the following input to output characteristics, which is linear: 
+R1.3: The sensor has the following input to output characteristics, which is linear:
 R1.4: If the sensor has a failure, it outputs a value between 0 mA and 4 mA (excluding 4 mA)
 R1.7: The sensor output values must be refreshed every 100 ms
 R2.0: The logic part consists of 2 independent voters A and B
