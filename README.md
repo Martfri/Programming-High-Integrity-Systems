@@ -1,5 +1,3 @@
-# PHIS
-
 Implementation of a safety system for a robot. The safety system puts the robot in a crouching position (safety position) if a person approaches the robot. Sensor values to measure the proximity are simulated with the help of a random number generator.
 
 
